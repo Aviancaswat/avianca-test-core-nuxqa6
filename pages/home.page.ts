@@ -226,8 +226,6 @@ const HomePage: THomePage = {
     },
 
     async selectOriginOption(): Promise<void> {
-        console.log("copysHome: ", copys);
-
         if (!page) {
             throw new Error(m.errors.initializated);
         }
