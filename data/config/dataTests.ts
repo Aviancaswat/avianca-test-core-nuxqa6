@@ -9,17 +9,10 @@ interface ExtendsTestCases extends TGenericCopys {
 const tests: ExtendsTestCases[] = [
     {
         id: 1,
-        description: "Vuelos de la ruta Bogotá a barranquilla",
-        homeCiudadOrigen: "BOG",
-        homeCiudadDestino: "BAQ",
-        targetPage: "home",
-    },
-    {
-        id: 2,
-        description: "Vuelos de la ruta Barranquilla a bogotá",
+        description: "Ir hasta pasajeros",
         homeCiudadOrigen: "BAQ",
         homeCiudadDestino: "BOG",
-        targetPage: "booking"
+        targetPage: "passenger"
     }
 ]
 

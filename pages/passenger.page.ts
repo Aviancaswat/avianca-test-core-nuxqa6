@@ -45,10 +45,11 @@ const PassengerPage: TPassengerPage = {
 
                 const getValueElement = (element: HTMLInputElement): string => {
                     let value: string | null = null;
-                    if (element.name === "email" || element.name === "confirmEmail") {
+                    if ((element.name === "email" || element.id === "email") ||
+                        (element.name === "confirmEmail" || element.id === "confirmEmail")) {
                         value = getDataRandom(emailsData);
                     }
-                    else if (element.name === "phone_phoneNumberId") {
+                    else if (element.name === "phone_phoneNumberId" || element.id === "phone_phoneNumberId") {
                         value = getDataRandom(phoneNumbersData);
                     }
                     else if (element.id.includes("IdFirstName")) {
@@ -63,7 +64,7 @@ const PassengerPage: TPassengerPage = {
                 const getButtonAndClickItem = () => {
                     const listOptions = document.querySelector(".ui-dropdown_list");
                     const buttonElement = listOptions?.querySelector(".ui-dropdown_item>button") as HTMLButtonElement;
-                    buttonElement.click();
+                    if (buttonElement) buttonElement.click();
                 }
 
                 const setValuesDefaultAutoForm = async () => {
@@ -74,25 +75,10 @@ const PassengerPage: TPassengerPage = {
                             elementButton.click();
                             const listOptions = document.querySelector(".ui-dropdown_list");
                             (listOptions?.querySelector(".ui-dropdown_item>button") as HTMLButtonElement)?.click();
-
-                            if (element.id === "passengerId") {
-                                elementButton.click();
-                                setTimeout(() => {
-                                    getButtonAndClickItem();
-                                }, 1000);
-                            }
-                            else if (element.id === 'phone_prefixPhoneId') {
-                                setTimeout(() => {
-                                    elementButton.click();
-                                    getButtonAndClickItem();
-                                }, 1000);
-                            }
-                            else {
-                                const checkAccept = document.querySelector('#acceptNewCheckbox') as HTMLButtonElement;
-                                checkAccept.click();
+                            setTimeout(() => {
                                 elementButton.click();
                                 getButtonAndClickItem();
-                            }
+                            }, 1000);
                         }
                         else if (element.tagName === "INPUT") {
                             const elementInput = element as HTMLInputElement;
@@ -147,13 +133,6 @@ const PassengerPage: TPassengerPage = {
             console.error("PASSENGER => Ocurrió un error al click en continuar en servicios. Error: ", error);
             throw error;
         }
-    },
-
-    async run(): Promise<void> {
-        console.log("Passenger page started...");
-        await this.fillFormValues();
-        await this.continueToServices();
-        console.log("Passenger page ended...");
     },
 
     async saveInformationFuturePayments(): Promise<void> {
@@ -501,7 +480,7 @@ const PassengerPage: TPassengerPage = {
             const passengerSize = passengerList.length;
 
             for (let i = 1; i <= passengerSize; i++) {
-                const indexP = i - 1; 
+                const indexP = i - 1;
                 const passengerItem = passengerList[indexP];
                 const programFlyr = await passengerItem.locator(".FB946-add-program-btn");
                 const isContainProgramFlyr = await programFlyr.isVisible();
@@ -515,6 +494,13 @@ const PassengerPage: TPassengerPage = {
             console.error("PASSENGERPAGE => Ha ocurrido un error al agregar el programa de viajeros frecuentes para todos los pasajeros | Error: ", error);
             throw error;
         }
+    },
+
+    async run(): Promise<void> {
+        console.log("Passenger page started...");
+        await this.fillFormValues();
+        await this.continueToServices();
+        console.log("Passenger page ended...");
     },
 }
 

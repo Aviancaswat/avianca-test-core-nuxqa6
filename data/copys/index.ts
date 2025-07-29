@@ -13,7 +13,7 @@ let genericCopys: TGenericCopys = {
     ...copySeat
 };
 
-const setDataTest = (data: Partial<TGenericCopys>) => {
+const setDataTest = (data: TGenericCopys) => {
     console.log("Data seteada: ", data);
     genericCopys = { ...genericCopys, ...data }
 }

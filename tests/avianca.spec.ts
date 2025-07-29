@@ -1,6 +1,6 @@
 import { test, type Page } from '@playwright/test';
 import { AviancaCore } from "../core/avianca.core";
-import { tests as data } from '../data/config/data';
+import { tests as data } from '../data/config/dataTests';
 import { dataPages } from '../data/config/global.page';
 import { setDataTest } from "../data/copys/index";
 import { PlaywrightHelper as helper } from '../helpers/avianca.helper';
@@ -20,7 +20,7 @@ import {
 } from "../pages/index";
 
 data.forEach(itemTest => {
-  test.describe(`Test ${itemTest.id + 1}:${itemTest.description}`, () => {
+  test.describe(`Test Avianca ${itemTest.id}`, () => {
     let page: Page | undefined | any;
     let homePage: THomePage = HomePage;
     let bookingPage: TBookingPage = BookingPage;
@@ -56,7 +56,7 @@ data.forEach(itemTest => {
     test(`${itemTest.description}`, async ({ }) => {
       await AviancaCore.initTests();
       const runPages = dataPages[lastPage];
- 
+
       if (runPages) {
         await runPages();
       } else {
