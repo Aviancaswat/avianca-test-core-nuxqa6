@@ -1,5 +1,5 @@
 const GLOBAL_VARIABLES = {
-    headless: true
+    headless: false
 }
 
 const GLOBAL_MESSAGES = {
@@ -8,4 +8,4 @@ const GLOBAL_MESSAGES = {
     }
 }
 
-export { GLOBAL_VARIABLES, GLOBAL_MESSAGES };
+export { GLOBAL_MESSAGES, GLOBAL_VARIABLES };

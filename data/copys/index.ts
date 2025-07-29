@@ -3,29 +3,20 @@ import { HomeCopy, IHomeCopy } from "./home/home.copy";
 import { copyPaseenger, IPaseengerCopy } from "./passenger/passenger.copy";
 import { copySeat, ISeatCopy } from "./seat/seat.copy";
 
-interface ICopysAvianca {
-    homePage: IHomeCopy;
-    bookingPage: IBookingCopy;
-    passengerPage: IPaseengerCopy;
-    seatPage: ISeatCopy;
-}
+type TCopysAvianca = IHomeCopy & IBookingCopy & IPaseengerCopy & ISeatCopy;
+type TGenericCopys = Partial<TCopysAvianca>;
 
-type TGenericCopys = Partial<ICopysAvianca>;
-
-const genericCopys: TGenericCopys = {
-    homePage: {
-        ...HomeCopy
-    },
-    bookingPage: {
-        ...copyBooking
-    },
-    passengerPage: {
-        ...copyPaseenger
-    },
-    seatPage: {
-        ...copySeat
-    }
+let genericCopys: TGenericCopys = {
+    ...HomeCopy,
+    ...copyBooking,
+    ...copyPaseenger,
+    ...copySeat
 };
 
-export { genericCopys, type ICopysAvianca, type TGenericCopys };
+const setDataTest = (data: Partial<TGenericCopys>) => {
+    console.log("Data seteada: ", data);
+    genericCopys = { ...genericCopys, ...data }
+}
+
+export { genericCopys, setDataTest, type TCopysAvianca, type TGenericCopys };
 

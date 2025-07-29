@@ -1,5 +1,5 @@
 import { expect, type Page } from "@playwright/test";
-import { HomeCopy as copys } from "../data/copys/home/home.copy";
+import { genericCopys as copys } from "../data/copys/index";
 import { GLOBAL_MESSAGES as m } from "../global.variables";
 import { PlaywrightHelper as helper } from "../helpers/avianca.helper";
 
@@ -29,14 +29,6 @@ const HomePage: THomePage = {
     initPage(pageP: TPage): void {
         page = pageP;
     },
-
-    /**
-     * await page.getByRole('button', { name: '' }).nth(1).click();
-            await page.getByRole('button', { name: '' }).nth(2).click();
-            await page.getByRole('button', { name: '' }).nth(3).click();
-            const confirmar = await page.locator('div#paxControlSearchId > div > div:nth-of-type(2) > div > div > button')
-            confirmar.click({ delay: helper.getRandomDelay() });
-    */
 
     async selectPassengerAdult(numberPassenger: number): Promise<void> {
 
@@ -68,7 +60,7 @@ const HomePage: THomePage = {
             await helper.takeScreenshot("seleccion-pasajeros-adultos");
         }
         catch (error) {
-            throw new Error("HOMEPAGE => Ha ocurrido un error al seleccionar los pasajeros de adultos | Error: ", error);
+            throw new Error(`HOMEPAGE => Ha ocurrido un error al seleccionar los pasajeros de adultos | Error: ${error}`);
         }
     },
 
@@ -102,7 +94,7 @@ const HomePage: THomePage = {
             await helper.takeScreenshot("seleccion-pasajeros-jovenes");
         }
         catch (error) {
-            throw new Error("HOMEPAGE => Ha ocurrido un error al seleccionar los pasajeros de adultos | Error: ", error);
+            throw new Error(`HOMEPAGE => Ha ocurrido un error al seleccionar los pasajeros de adultos | Error: ${error}`);
         }
     },
 
@@ -136,7 +128,7 @@ const HomePage: THomePage = {
             await helper.takeScreenshot("seleccion-pasajeros-niños");
         }
         catch (error) {
-            throw new Error("HOMEPAGE => Ha ocurrido un error al seleccionar los pasajeros de adultos | Error: ", error);
+            throw new Error(`HOMEPAGE => Ha ocurrido un error al seleccionar los pasajeros de adultos | Error: ${error}`);
         }
     },
 
@@ -171,17 +163,26 @@ const HomePage: THomePage = {
             await helper.takeScreenshot("seleccion-pasajeros-infantes");
         }
         catch (error) {
-            throw new Error("HOMEPAGE => Ha ocurrido un error al seleccionar los pasajeros de adultos | Error: ", error);
+            throw new Error(`HOMEPAGE => Ha ocurrido un error al seleccionar los pasajeros de adultos | Error: ${error}`);
         }
     },
 
     async confirmPassengerSelecteds(): Promise<void> {
+
+        if (!page) {
+            throw new Error(m.errors.initializated);
+        }
+
         await page.waitForTimeout(500);
         const confirmar = await page.locator('div#paxControlSearchId > div > div:nth-of-type(2) > div > div > button')
         await confirmar.click({ delay: helper.getRandomDelay() });
     },
 
     async selectOptionTypeFlight(): Promise<void> {
+
+        if (!page) {
+            throw new Error(m.errors.initializated);
+        }
 
         await page.waitForSelector("#searchComponentDiv");
 
@@ -208,7 +209,7 @@ const HomePage: THomePage = {
         try {
 
             const consentBtn = await page.locator('#onetrust-pc-btn-handler', { delay: helper.getRandomDelay() });
-            const isVisible = consentBtn.isVisible();
+            const isVisible = await consentBtn.isVisible();
 
             if (isVisible) {
                 await page.waitForSelector("#onetrust-pc-btn-handler");
@@ -225,6 +226,7 @@ const HomePage: THomePage = {
     },
 
     async selectOriginOption(): Promise<void> {
+        console.log("copysHome: ", copys);
 
         if (!page) {
             throw new Error(m.errors.initializated);
@@ -232,15 +234,15 @@ const HomePage: THomePage = {
 
         try {
 
-            const lang = helper.getLang();
+           const lang = helper.getLang();
             const wrapperOrigin = page.locator('#originBtn');
             await expect(wrapperOrigin).toBeVisible({ timeout: 20_000 });
             await wrapperOrigin.click();
-            const origen = page.getByPlaceholder((copys[lang])?.homeOrigen);
-            await origen.fill(copys['ciudad_origen'], { delay: helper.getRandomDelay() });
+            const origen = page.getByPlaceholder((copys.home?.es.homeOrigen));
+            await origen.fill(copys.homeCiudadOrigen, { delay: helper.getRandomDelay() });
             await origen.press('Enter');
             await page.waitForTimeout(1500);
-            await (page.locator('id=' + copys['ciudad_origen'])).click({ delay: helper.getRandomDelay() })
+            await (page.locator('id=' + copys.homeCiudadOrigen)).click({ delay: helper.getRandomDelay() })
             await helper.takeScreenshot('ciudad-origen');
             await page.waitForTimeout(2000);
         }
@@ -259,12 +261,12 @@ const HomePage: THomePage = {
         try {
 
             const lang = helper.getLang();
-            await expect(page.getByPlaceholder(copys[lang]?.homeDestino)).toBeVisible();
-            const destino = page.getByPlaceholder(copys[lang]?.homeDestino);
+            await expect(page.getByPlaceholder(copys.home?.es.homeDestino)).toBeVisible();
+            const destino = page.getByPlaceholder(copys.home?.es.homeDestino);
             await destino.click({ delay: helper.getRandomDelay() });
-            await destino.fill(copys['ciudad_destino'], { delay: helper.getRandomDelay() });
+            await destino.fill(copys.homeCiudadDestino, { delay: helper.getRandomDelay() });
             await destino.press('Enter');
-            await (page.locator('id=' + copys['ciudad_destino'])).click({ delay: helper.getRandomDelay() });
+            await (page.locator('id=' + copys.homeCiudadDestino)).click({ delay: helper.getRandomDelay() });
             await helper.takeScreenshot('04-ciudad-destino');
         }
         catch (error) {
@@ -284,7 +286,7 @@ const HomePage: THomePage = {
             await page.waitForSelector("#departureInputDatePickerId");
             const fechaIda = await page.locator('id=departureInputDatePickerId');
             await fechaIda.click({ delay: helper.getRandomDelay() });
-            await page.locator('span').filter({ hasText: copys['fecha_salida'] }).click({ delay: helper.getRandomDelay() });
+            await page.locator('span').filter({ hasText: copys.homeFechaSalida }).click({ delay: helper.getRandomDelay() });
             await helper.takeScreenshot('seleccion-fecha-ida');
         }
         catch (error) {
@@ -302,7 +304,7 @@ const HomePage: THomePage = {
         try {
 
             await page.waitForTimeout(3000);
-            await page.locator('span').filter({ hasText: copys['fecha_llegada'] }).click({ delay: helper.getRandomDelay() });
+            await page.locator('span').filter({ hasText: copys.homeFechaLLegada }).click({ delay: helper.getRandomDelay() });
             await helper.takeScreenshot('seleccion-fecha-vuelta');
         }
         catch (error) {
@@ -340,8 +342,8 @@ const HomePage: THomePage = {
         try {
 
             const lang = helper.getLang();
-            await expect(page.getByRole('button', { name: copys[lang]?.homeBuscar, exact: true })).toBeVisible();
-            await page.getByRole('button', { name: copys[lang]?.homeBuscar, exact: true }).click({ delay: helper.getRandomDelay() });
+            await expect(page.getByRole('button', { name: copys.home![lang]?.homeBuscar, exact: true })).toBeVisible();
+            await page.getByRole('button', { name: copys.home![lang]?.homeBuscar, exact: true }).click({ delay: helper.getRandomDelay() });
             await helper.takeScreenshot('busqueda-vuelos');
             await page.waitForSelector('#pageWrap');
         }

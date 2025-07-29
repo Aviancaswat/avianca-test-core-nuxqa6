@@ -15,10 +15,12 @@ export interface IHomeCopy {
     homeFechaLLegada: string;
     homeCiudadOrigen: string;
     homeCiudadDestino: string;
-    es: HomeTranslation;
-    en: HomeTranslation;
-    pt: HomeTranslation;
-    fr: HomeTranslation;
+    home: {
+        es: HomeTranslation;
+        en: HomeTranslation;
+        pt: HomeTranslation;
+        fr: HomeTranslation;
+    },
     homeisActiveOptionOutbound: boolean;
     getLang: () => Lang;
 }
@@ -30,33 +32,35 @@ const HomeCopy: IHomeCopy = {
     homeFechaLLegada: 'jul 29',
     homeCiudadOrigen: 'MDE',
     homeCiudadDestino: 'BOG',
-    es: {
-        homeOrigen: 'Origen',
-        homeDestino: 'Hacia',
-        homeBuscar: 'Buscar',
-        homeVuelta: 'Vuelta',
-        homePagar: 'Ir a pagar',
-    },
-    en: {
-        homeOrigen: 'Origin',
-        homeDestino: 'Destination',
-        homeBuscar: 'Search',
-        homeVuelta: 'Return',
-        homePagar: 'Go to payment',
-    },
-    pt: {
-        homeOrigen: 'Origem',
-        homeDestino: 'Destino',
-        homeBuscar: 'Buscar voos',
-        homeVuelta: 'Regresso',
-        homePagar: 'Vá pagar',
-    },
-    fr: {
-        homeOrigen: 'Origen',
-        homeDestino: 'Destination',
-        homeBuscar: 'Rechercher',
-        homeVuelta: 'Retour',
-        homePagar: ' Continuer',
+    home: {
+        es: {
+            homeOrigen: 'Origen',
+            homeDestino: 'Hacia',
+            homeBuscar: 'Buscar',
+            homeVuelta: 'Vuelta',
+            homePagar: 'Ir a pagar',
+        },
+        en: {
+            homeOrigen: 'Origin',
+            homeDestino: 'Destination',
+            homeBuscar: 'Search',
+            homeVuelta: 'Return',
+            homePagar: 'Go to payment',
+        },
+        pt: {
+            homeOrigen: 'Origem',
+            homeDestino: 'Destino',
+            homeBuscar: 'Buscar voos',
+            homeVuelta: 'Regresso',
+            homePagar: 'Vá pagar',
+        },
+        fr: {
+            homeOrigen: 'Origen',
+            homeDestino: 'Destination',
+            homeBuscar: 'Rechercher',
+            homeVuelta: 'Retour',
+            homePagar: ' Continuer',
+        },
     },
     getLang: () => HomeCopy.homeIdioma,
     homeisActiveOptionOutbound: true,

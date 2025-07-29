@@ -61,7 +61,7 @@ const BookingPage: TBookingPage = {
             await flightOptions.nth(indiceVueloRegreso).click({ delay: helper.getRandomDelay() });
             await page.waitForSelector(".journey_fares_list_item");
             await helper.takeScreenshot('13-seleccion-vuelo-regreso');
-            const flightFare = copyBooking['tarifa_vuelta'];
+            const flightFare = copyBooking.bookingTarifaVuelta;
             const fareIndex = getFareIndex(flightFare);
             const selectedFare = page.locator(".journey_fares_list_item").nth(fareIndex);
             await expect(selectedFare).toBeVisible();
@@ -85,7 +85,7 @@ const BookingPage: TBookingPage = {
         try {
 
             await page.waitForSelector('#pageWrap');
-            const flightPosition = parseInt(copyBooking['numero_vuelo_ida']);
+            const flightPosition = parseInt(copyBooking.bookingNumeroVueloIda);
             await page.waitForSelector('.journey_price_fare-select_label-text');
             const flightOptions = page.locator('.journey_price_fare-select_label-text');
             const flightCount = await flightOptions.count();
@@ -97,7 +97,7 @@ const BookingPage: TBookingPage = {
             await expect(flightOptions.nth(flightPosition)).toBeVisible();
             await flightOptions.nth(flightPosition).click({ delay: helper.getRandomDelay() });
 
-            const flightFare = copyBooking['tarifa_ida'];
+            const flightFare = copyBooking.bookingTarifaIda;
             const fareIndex = getFareIndex(flightFare);
             const selectedFare = page.locator(".journey_fares_list_item").nth(fareIndex);
             await expect(selectedFare).toBeVisible();
@@ -164,7 +164,7 @@ const BookingPage: TBookingPage = {
             await page.waitForSelector(".button.page_button.btn-action.page_button-primary-flow.ng-star-inserted");
             if (copyBooking.bookingConsultaCondicionesTarifa) {
                 const newTabPromise = page.waitForEvent("popup");
-                await page.getByRole('link', { name: copyBooking[lang].bookingInformacionTarifa }).click({ delay: helper.getRandomDelay() });
+                await page.getByRole('link', { name: copyBooking.booking[lang].bookingInformacionTarifa }).click({ delay: helper.getRandomDelay() });
                 await page.waitForTimeout(3500);
                 const newTab = await newTabPromise;
                 await newTab.waitForLoadState();

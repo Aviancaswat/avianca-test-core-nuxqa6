@@ -1,6 +1,6 @@
 import type { Page, TestInfo } from "@playwright/test";
+import { HomeCopy as copys } from "../data/copys/home/home.copy";
 import type { Lang } from "../types/copy.type";
-import { copys } from "../data/home.deautl.copy";
 
 type Tpage = Page | undefined | any;
 
@@ -10,7 +10,7 @@ let testInfo: TestInfo;
 
 const PlaywrightHelper = {
 
-    init(pageP: Tpage, testInfoP) {
+    init(pageP: Tpage, testInfoP: TestInfo) {
         page = pageP;
         testInfo = testInfoP;
     },
