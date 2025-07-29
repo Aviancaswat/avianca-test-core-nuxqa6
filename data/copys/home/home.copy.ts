@@ -28,8 +28,8 @@ export interface IHomeCopy {
 const HomeCopy: IHomeCopy = {
     homeIdioma: 'es' as Lang,
     homePais: 'CO',
-    homeFechaSalida: 'jul 28',
-    homeFechaLLegada: 'jul 29',
+    homeFechaSalida: 'ago 28',
+    homeFechaLLegada: 'ago 29',
     homeCiudadOrigen: 'MDE',
     homeCiudadDestino: 'BOG',
     home: {

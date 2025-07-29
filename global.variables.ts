@@ -8,4 +8,10 @@ const GLOBAL_MESSAGES = {
     }
 }
 
-export { GLOBAL_MESSAGES, GLOBAL_VARIABLES };
+const ENVIROMENT_URL = {
+    //url: "https://avianca.com/es/"
+    url: "https://nuxqa6.avtest.ink/es/"
+}
+
+export { ENVIROMENT_URL, GLOBAL_MESSAGES, GLOBAL_VARIABLES };
+

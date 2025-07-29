@@ -1,6 +1,7 @@
 import { test, type Page } from '@playwright/test';
 import { AviancaCore } from "../core/avianca.core";
 import { tests as data } from '../data/config/data';
+import { dataPages } from '../data/config/global.page';
 import { setDataTest } from "../data/copys/index";
 import { PlaywrightHelper as helper } from '../helpers/avianca.helper';
 import {
@@ -50,11 +51,17 @@ data.forEach(itemTest => {
       setDataTest({});
     });
 
+    const { targetPage: lastPage } = itemTest;
+
     test(`${itemTest.description}`, async ({ }) => {
       await AviancaCore.initTests();
-      await homePage.verifyCookies();
-      await homePage.selectOriginOption();
-      await homePage.selectReturnOption();
+      const runPages = dataPages[lastPage];
+ 
+      if (runPages) {
+        await runPages();
+      } else {
+        throw new Error(`No se encontró función de ejecución para la página "${lastPage}"`);
+      }
     });
   });
 });

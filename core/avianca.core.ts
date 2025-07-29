@@ -1,5 +1,5 @@
-import { GLOBAL_VARIABLES as g, GLOBAL_MESSAGES as m } from "../global.variables";
 import type { Browser, BrowserContext, Page } from "@playwright/test";
+import { ENVIROMENT_URL as env, GLOBAL_VARIABLES as g, GLOBAL_MESSAGES as m } from "../global.variables";
 import { PlaywrightHelper as helper } from "../helpers/avianca.helper";
 
 let page: Page | undefined | any;
@@ -57,7 +57,7 @@ const AviancaCore = {
 
         try {
 
-            await page.goto('https://www.avianca.com/es/', {
+            await page.goto(env.url, {
                 waitUntil: "domcontentloaded",
                 timeout: 400_000
             });
