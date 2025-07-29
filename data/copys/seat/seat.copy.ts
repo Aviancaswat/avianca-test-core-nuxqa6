@@ -1,40 +1,40 @@
-interface SeatCopy {
-    tarifaDeAsientos: string,
-    cambiarAsientosSeleccionados: boolean,
-    seleccionarAsientosPorDefecto:boolean,
-    volverAModuloServicios:boolean,
-    continuarAlSiguienteVuelo:boolean,
+export interface ISeatCopy {
+    seatTarifaDeAsientos: string,
+    seatCambiarAsientosSeleccionados: boolean,
+    seatSeleccionarAsientosPorDefecto: boolean,
+    seatVolverAModuloServicios: boolean,
+    seatContinuarAlSiguienteVuelo: boolean,
     es: {
-        pagar: string,
+        seatPagar: string,
     },
     en: {
-        pagar: string,
+        seatPagar: string,
     },
     pt: {
-        pagar: string,
+        seatPagar: string,
     },
     fr: {
-        pagar: string,
-    },
+        seatPagar: string,
+    }
 }
 
-export const copySeat: SeatCopy = {
-    tarifaDeAsientos: 'economy',
-    cambiarAsientosSeleccionados: false,
-    seleccionarAsientosPorDefecto:false,
-    volverAModuloServicios:false,
-    continuarAlSiguienteVuelo:false,
+export const copySeat: ISeatCopy = {
+    seatTarifaDeAsientos: 'economy',
+    seatCambiarAsientosSeleccionados: false,
+    seatSeleccionarAsientosPorDefecto: false,
+    seatVolverAModuloServicios: false,
+    seatContinuarAlSiguienteVuelo: false,
     es: {
-        pagar: 'Ir a pagar',
+        seatPagar: 'Ir a pagar',
     },
     en: {
-        pagar: 'Go to payment',
+        seatPagar: 'Go to payment',
     },
     pt: {
-        pagar: 'Vá pagar',
+        seatPagar: 'Vá pagar',
     },
     fr: {
-        pagar: 'Continuer',
+        seatPagar: 'Continuer',
     },
-    
+
 }

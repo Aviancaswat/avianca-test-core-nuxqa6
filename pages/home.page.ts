@@ -1,7 +1,7 @@
 import { expect, type Page } from "@playwright/test";
+import { HomeCopy as copys } from "../data/copys/home/home.copy";
 import { GLOBAL_MESSAGES as m } from "../global.variables";
 import { PlaywrightHelper as helper } from "../helpers/avianca.helper";
-import { HomeCopy as copys } from "../data/copys/home/home.copy";
 
 type TPage = Page | undefined | any;
 
@@ -185,7 +185,7 @@ const HomePage: THomePage = {
 
         await page.waitForSelector("#searchComponentDiv");
 
-        if (copys.isActiveOptionOutbound) { //si esta seleccionado el vuelo de ida
+        if (copys.homeisActiveOptionOutbound) { //si esta seleccionado el vuelo de ida
             const checkIda = page.locator("#journeytypeId_1");
             await checkIda.click({ delay: helper.getRandomDelay() });
             await helper.takeScreenshot("check-vuelo-ida");
@@ -236,7 +236,7 @@ const HomePage: THomePage = {
             const wrapperOrigin = page.locator('#originBtn');
             await expect(wrapperOrigin).toBeVisible({ timeout: 20_000 });
             await wrapperOrigin.click();
-            const origen = page.getByPlaceholder((copys[lang])?.origen);
+            const origen = page.getByPlaceholder((copys[lang])?.homeOrigen);
             await origen.fill(copys['ciudad_origen'], { delay: helper.getRandomDelay() });
             await origen.press('Enter');
             await page.waitForTimeout(1500);
@@ -259,8 +259,8 @@ const HomePage: THomePage = {
         try {
 
             const lang = helper.getLang();
-            await expect(page.getByPlaceholder(copys[lang]?.destino)).toBeVisible();
-            const destino = page.getByPlaceholder(copys[lang]?.destino);
+            await expect(page.getByPlaceholder(copys[lang]?.homeDestino)).toBeVisible();
+            const destino = page.getByPlaceholder(copys[lang]?.homeDestino);
             await destino.click({ delay: helper.getRandomDelay() });
             await destino.fill(copys['ciudad_destino'], { delay: helper.getRandomDelay() });
             await destino.press('Enter');
@@ -340,8 +340,8 @@ const HomePage: THomePage = {
         try {
 
             const lang = helper.getLang();
-            await expect(page.getByRole('button', { name: copys[lang]?.buscar, exact: true })).toBeVisible();
-            await page.getByRole('button', { name: copys[lang]?.buscar, exact: true }).click({ delay: helper.getRandomDelay() });
+            await expect(page.getByRole('button', { name: copys[lang]?.homeBuscar, exact: true })).toBeVisible();
+            await page.getByRole('button', { name: copys[lang]?.homeBuscar, exact: true }).click({ delay: helper.getRandomDelay() });
             await helper.takeScreenshot('busqueda-vuelos');
             await page.waitForSelector('#pageWrap');
         }

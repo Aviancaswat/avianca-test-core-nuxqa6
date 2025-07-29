@@ -1,8 +1,8 @@
 import { expect, type Page } from "@playwright/test";
+import { copyPaseenger } from "../data/copys/passenger/passenger.copy";
 import { GLOBAL_MESSAGES as m } from "../global.variables";
 import { PlaywrightHelper as helper } from "../helpers/avianca.helper";
 import { emailsData, lastNamesData, phoneNumbersData, userNamesData } from "../utils/variables";
-import { copyPaseenger } from "../data/copys/passenger/passenger.copy";
 
 type TPage = Page | undefined;
 
@@ -454,7 +454,7 @@ const PassengerPage: TPassengerPage = {
             await expect(listOptions).toBeVisible({ timeout: 15000 });
             const childrenList = await listOptions.locator("li").all();
             const countChildren = childrenList.length;
-            const optionUser = copyPaseenger.optionProgramFlyerFrequent;
+            const optionUser = copyPaseenger.passengeroOptionProgramFlyerFrequent;
 
             if (optionUser < 0) {
                 throw new Error("La opción escogida por el usuario para el programa de viajero frecuente no es válida");

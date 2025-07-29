@@ -1,44 +1,44 @@
 
-interface BookingCopy {
-    editFlightSelected: boolean,    
-    numero_vuelo_ida: string,
-    numero_vuelo_regreso: string,
-    consulta_condiciones_tarifa:boolean,
+export interface IBookingCopy {
+    bookingEditFlightSelected: boolean,
+    bookingNumeroVueloIda: string,
+    bookingNumeroVueloRegreso: string,
+    bookingConsultaCondicionesTarifa: boolean
     es: {
-        informacion_tarifas: string,
+        bookingInformacionTarifa: string,
     },
     en: {
-        informacion_tarifas: string,
+        bookingInformacionTarifa: string,
     },
     pt: {
-        informacion_tarifas: string,
+        bookingInformacionTarifa: string,
     },
     fr: {
-        informacion_tarifas: string,
+        bookingInformacionTarifa: string,
     },
-    tarifa_ida: "light" | "basic" | "classic" | "flex" | "business" | "insignia",
-    tarifa_vuelta: "light" | "basic" | "classic" | "flex" | "business" | "insignia",
-    consulta_retracto_desistimiento: boolean,
+    bookingTarifaIda: "light" | "basic" | "classic" | "flex" | "business" | "insignia",
+    bookingTarifaVuelta: "light" | "basic" | "classic" | "flex" | "business" | "insignia",
+    bookingConsultaRetractoDesistimiento: boolean;
 }
 
-export const copyBooking: BookingCopy = {
-    editFlightSelected: true,
-    numero_vuelo_ida:'0',
-    numero_vuelo_regreso:'0',
-    consulta_condiciones_tarifa:false,
+export const copyBooking: IBookingCopy = {
+    bookingEditFlightSelected: true,
+    bookingNumeroVueloIda: '0',
+    bookingNumeroVueloRegreso: '0',
+    bookingConsultaCondicionesTarifa: false,
     es: {
-        informacion_tarifas: 'condiciones de tu tarifa',
+        bookingInformacionTarifa: 'condiciones de tu tarifa',
     },
     en: {
-        informacion_tarifas: 'conditions of your fare',
+        bookingInformacionTarifa: 'conditions of your fare',
     },
     pt: {
-        informacion_tarifas: 'condições da sua tarifa',
+        bookingInformacionTarifa: 'condições da sua tarifa',
     },
     fr: {
-        informacion_tarifas: 'conditions de votre tarif',
+        bookingInformacionTarifa: 'conditions de votre tarif',
     },
-    tarifa_ida:"classic",
-    tarifa_vuelta:"basic",
-    consulta_retracto_desistimiento: false,
+    bookingTarifaIda: "classic",
+    bookingTarifaVuelta: "basic",
+    bookingConsultaRetractoDesistimiento: false
 }

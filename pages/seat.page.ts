@@ -1,7 +1,7 @@
 import { expect, type Page } from "@playwright/test";
+import { copySeat } from "../data/copys/seat/seat.copy";
 import { GLOBAL_MESSAGES as m } from "../global.variables";
 import { PlaywrightHelper as helper } from "../helpers/avianca.helper";
-import { copySeat } from "../data/copys/seat/seat.copy";
  
 type TPage = Page | undefined | any;
  
@@ -37,12 +37,12 @@ const SeatPage: TSeatPage = {
                 const {
                     seleccionar_asientos,
                 } = SeatPage;
-                let seleccionarAsientosPorDefecto = copySeat.seleccionarAsientosPorDefecto;
-                let continuarAlSiguienteVuelo = copySeat.continuarAlSiguienteVuelo;
+                let seleccionarAsientosPorDefecto = copySeat.seatSeleccionarAsientosPorDefecto;
+                let continuarAlSiguienteVuelo = copySeat.seatContinuarAlSiguienteVuelo;
                 if(!seleccionarAsientosPorDefecto && !continuarAlSiguienteVuelo){
                     await page.waitForTimeout(12000);
-                    const cambiarAsientosSeleccionados = copySeat.cambiarAsientosSeleccionados;
-                    const tarifaAsientos= copySeat.tarifaDeAsientos;
+                    const cambiarAsientosSeleccionados = copySeat.seatCambiarAsientosSeleccionados;
+                    const tarifaAsientos= copySeat.seatTarifaDeAsientos;
                     await page.waitForSelector('#seatmapContainer');
                     await page.waitForSelector('.seat-number');
                     await helper.takeScreenshot("Pagina-de-seleccion-asientos");
@@ -227,11 +227,11 @@ const SeatPage: TSeatPage = {
                 const {
                     seleccionar_asientos,
                 } = SeatPage;
-                let seleccionarAsientosPorDefecto = copySeat.seleccionarAsientosPorDefecto;
+                let seleccionarAsientosPorDefecto = copySeat.seatSeleccionarAsientosPorDefecto;
                 if(!seleccionarAsientosPorDefecto){
                     await page.waitForTimeout(12000);
-                    const cambiarAsientosSeleccionados = copySeat.cambiarAsientosSeleccionados;
-                    const tarifaAsientos= copySeat.tarifaDeAsientos;
+                    const cambiarAsientosSeleccionados = copySeat.seatCambiarAsientosSeleccionados;
+                    const tarifaAsientos= copySeat.seatTarifaDeAsientos;
                     await page.waitForSelector('#seatmapContainer');
                     await page.waitForSelector('.seat-number');
                     await helper.takeScreenshot("Pagina-de-seleccion-asientos");
@@ -254,8 +254,8 @@ const SeatPage: TSeatPage = {
         }
         try {
                 const lang = helper.getLang();
-                await expect(page.getByRole('button', { name: copySeat[lang].pagar, exact: true })).toBeVisible()
-                await page.getByRole('button', { name: copySeat[lang].pagar, exact: true }).click({ delay: helper.getRandomDelay()} );
+                await expect(page.getByRole('button', { name: copySeat[lang].seatPagar, exact: true })).toBeVisible()
+                await page.getByRole('button', { name: copySeat[lang].seatPagar, exact: true }).click({ delay: helper.getRandomDelay()} );
                 await page.waitForTimeout(5000);
             }
         catch (error) {
@@ -290,7 +290,7 @@ const SeatPage: TSeatPage = {
             ir_a_pagar,
             volver,
         } = SeatPage;
-        let volverAModuloServicios = copySeat.volverAModuloServicios;
+        let volverAModuloServicios = copySeat.seatVolverAModuloServicios;
         if(!volverAModuloServicios){
             console.log("Seats page started...");
             await seleccionar_asientos_ida();

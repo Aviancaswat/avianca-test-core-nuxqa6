@@ -1,7 +1,7 @@
 import { expect, type Page } from "@playwright/test";
+import { copyBooking } from "../data/copys/booking/booking.copy";
 import { GLOBAL_MESSAGES as m } from "../global.variables";
 import { PlaywrightHelper as helper } from "../helpers/avianca.helper";
-import { copyBooking } from "../data/copys/booking/booking.copy";
 
 type TPage = Page | undefined | any;
 
@@ -49,7 +49,7 @@ const BookingPage: TBookingPage = {
             const containerReturn = page.locator("#journeysContainerId_1");
             await expect(containerReturn).toBeVisible();
             await page.waitForTimeout(5000);
-            let indiceVueloRegreso = parseInt(copyBooking.numero_vuelo_regreso);
+            let indiceVueloRegreso = parseInt(copyBooking.bookingNumeroVueloRegreso);
             const flightOptions = containerReturn.locator('.journey_price_fare-select_label-text');
             const flightCount = await flightOptions.count();
 
@@ -136,7 +136,7 @@ const BookingPage: TBookingPage = {
 
         try {
 
-            if (copyBooking.editFlightSelected) {
+            if (copyBooking.bookingEditFlightSelected) {
                 console.log("entró a editar la selección del vuelo");
                 const titleSummary = page.locator(".trip-summary-heading-created");
                 await expect(titleSummary).toBeVisible({ timeout: 10_000 });
@@ -162,16 +162,16 @@ const BookingPage: TBookingPage = {
         try {
             const lang = helper.getLang();
             await page.waitForSelector(".button.page_button.btn-action.page_button-primary-flow.ng-star-inserted");
-            if (copyBooking.consulta_condiciones_tarifa) {
+            if (copyBooking.bookingConsultaCondicionesTarifa) {
                 const newTabPromise = page.waitForEvent("popup");
-                await page.getByRole('link', { name: copyBooking[lang].informacion_tarifas }).click({ delay: helper.getRandomDelay() });
+                await page.getByRole('link', { name: copyBooking[lang].bookingInformacionTarifa }).click({ delay: helper.getRandomDelay() });
                 await page.waitForTimeout(3500);
                 const newTab = await newTabPromise;
                 await newTab.waitForLoadState();
                 await expect(newTab).toHaveURL("https://www.avianca.com/es/informacion-y-ayuda/tarifas-avianca/");
                 newTab.close();
             }
-            if (copyBooking.consulta_retracto_desistimiento) {
+            if (copyBooking.bookingConsultaRetractoDesistimiento) {
                 const footerElement = await page.waitForSelector('.FB472.fb-footer-element');
                 const linkInsideFooter = footerElement.locator('.link');
                 await linkInsideFooter.click({ delay: helper.getRandomDelay() });
@@ -201,4 +201,4 @@ const BookingPage: TBookingPage = {
     }
 }
 
-export { BookingPage }
+export { BookingPage };

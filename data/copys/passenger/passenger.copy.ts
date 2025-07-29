@@ -1,7 +1,7 @@
-interface CopyPaseenger {
-    optionProgramFlyerFrequent: number
+export interface IPaseengerCopy {
+    passengeroOptionProgramFlyerFrequent: number
 }
 
-export const copyPaseenger: CopyPaseenger = {
-    optionProgramFlyerFrequent: 0
+export const copyPaseenger: IPaseengerCopy = {
+    passengeroOptionProgramFlyerFrequent: 0
 }
