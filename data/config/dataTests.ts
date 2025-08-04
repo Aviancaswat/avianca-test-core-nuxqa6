@@ -9,10 +9,10 @@ interface ExtendsTestCases extends TGenericCopys {
 const tests: ExtendsTestCases[] = [
     {
         id: 1,
-        description: "Ir hasta pasajeros",
+        description: "Home => Payment",
         homeCiudadOrigen: "BAQ",
         homeCiudadDestino: "BOG",
-        targetPage: "passenger"
+        targetPage: "payment"
     }
 ]
 

@@ -1,5 +1,5 @@
 const GLOBAL_VARIABLES = {
-    headless: false
+    headless: true
 }
 
 const GLOBAL_MESSAGES = {

@@ -14,7 +14,6 @@ let genericCopys: TGenericCopys = {
 };
 
 const setDataTest = (data: TGenericCopys) => {
-    console.log("Data seteada: ", data);
     genericCopys = { ...genericCopys, ...data }
 }
 
