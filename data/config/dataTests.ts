@@ -10,7 +10,7 @@ const tests: ExtendsTestCases[] = [
     {
         id: 1,
         description: "Home => Payment",
-        homeCiudadOrigen: "MDE",
+        homeCiudadOrigen: "BAQ",
         homeCiudadDestino: "BOG",
         targetPage: "home"
     }
