@@ -35,4 +35,3 @@ const dataPages = {
 };
 
 export { dataPages };
-

@@ -1,4 +1,6 @@
 import type { Page, TestInfo } from "@playwright/test";
+import path from "path";
+import { genericCopys } from "../data/copys";
 import { HomeCopy as copys } from "../data/copys/home/home.copy";
 import type { Lang } from "../types/copy.type";
 
@@ -36,10 +38,17 @@ const PlaywrightHelper = {
         try {
 
             const timestamp = this.getTimestamp();
-            const filename = `step${screenshotCounter++}-${label}-${timestamp}.png`;
+            const idTest = genericCopys.id;
+            const foldername = genericCopys.description!.replaceAll(" ", "");
+            const filename = `step${screenshotCounter++}-${label}-${timestamp}.png`
+            const fullNameFolder = `${idTest}-${foldername}`
+            const pathScreenshot = path.join(__dirname, '..', 'results-by-test', fullNameFolder, filename);
+
             testInfo.attach(filename, {
-                body: await page.screenshot(),
-                contentType: "image/png"
+                body: await page.screenshot({
+                    path: pathScreenshot
+                }),
+                contentType: "image/png",
             });
 
         } catch (error) {
@@ -56,3 +65,4 @@ const PlaywrightHelper = {
 }
 
 export { PlaywrightHelper };
+

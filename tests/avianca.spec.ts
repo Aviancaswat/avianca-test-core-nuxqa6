@@ -19,8 +19,19 @@ import {
   type TServicesPage,
 } from "../pages/index";
 
+// Pendiente por desarrollar
+
+/* Control granular de finalización de prueba: 
+  agregar la capacidad de detener la ejecución en puntos más específicos del flujo, 
+  por ejemplo en la selección de vuelo de ida dentro del flujo de Booking.*/
+
+/* Gestión avanzada de capturas de pantalla: actualmente solo se guarda 
+la captura final (test-finished) en las carpetas en local. 
+Se debe implementar que todas las capturas de cada paso de la prueba se almacenen 
+de forma ordenada en carpetas por prueba. */
+
 data.forEach(itemTest => {
-  test.describe(`Test Avianca ${itemTest.id}`, () => {
+  test.describe(`${itemTest.id}`, () => {
     let page: Page | undefined | any;
     let homePage: THomePage = HomePage;
     let bookingPage: TBookingPage = BookingPage;
@@ -51,16 +62,17 @@ data.forEach(itemTest => {
       setDataTest({});
     });
 
-    const { targetPage: lastPage } = itemTest;
+    const { targetPage } = itemTest;
+    const finalTargetPage = targetPage ?? "home";
 
     test(`${itemTest.description}`, async ({ }) => {
       await AviancaCore.initTests();
-      const runPages = dataPages[lastPage];
+      const runPages = dataPages[finalTargetPage];
 
       if (runPages) {
         await runPages();
       } else {
-        throw new Error(`No se encontró función de ejecución para la página "${lastPage}"`);
+        throw new Error(`No se encontró función de ejecución para la página "${finalTargetPage}"`);
       }
     });
   });

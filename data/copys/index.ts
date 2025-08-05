@@ -3,7 +3,13 @@ import { HomeCopy, IHomeCopy } from "./home/home.copy";
 import { copyPaseenger, IPaseengerCopy } from "./passenger/passenger.copy";
 import { copySeat, ISeatCopy } from "./seat/seat.copy";
 
-type TCopysAvianca = IHomeCopy & IBookingCopy & IPaseengerCopy & ISeatCopy;
+type ExtendTypeTest = {
+    id: string,
+    description: string,
+    targetPage: 'home' | 'booking' | 'passenger' | 'services' | 'seat' | 'payment'
+}
+
+type TCopysAvianca = IHomeCopy & IBookingCopy & IPaseengerCopy & ISeatCopy & ExtendTypeTest;
 type TGenericCopys = Partial<TCopysAvianca>;
 
 let genericCopys: TGenericCopys = {

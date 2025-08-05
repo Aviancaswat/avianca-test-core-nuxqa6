@@ -1,15 +1,16 @@
 import { TGenericCopys } from "../copys";
 
-interface ExtendsTestCases extends TGenericCopys {
-    id: number,
-    description: string,
-    targetPage: 'home' | 'booking' | 'passenger' | 'services' | 'seat' | 'payment'
-}
-
-const tests: ExtendsTestCases[] = [
+const tests: TGenericCopys[] = [
     {
-        id: 1,
-        description: "Home => Payment",
+        id: "miUnicoId",
+        description: "ruta de barranquilla a bogotá",
+        homeCiudadOrigen: "BAQ",
+        homeCiudadDestino: "BOG",
+        targetPage: "home"
+    },
+    {
+        id: "otroUnicoId",
+        description: "ruta de bogotá a barranquilla",
         homeCiudadOrigen: "BAQ",
         homeCiudadDestino: "BOG",
         targetPage: "home"
