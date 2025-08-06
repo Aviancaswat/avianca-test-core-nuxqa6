@@ -20,7 +20,7 @@ const tests: TGenericCopys[] = [
         description: "ruta de bogotá a barranquilla",
         homeCiudadOrigen: "BAQ",
         homeCiudadDestino: "BOG",
-        targetPage: "home"
+        targetPage: "booking"
     }
 ]
 
