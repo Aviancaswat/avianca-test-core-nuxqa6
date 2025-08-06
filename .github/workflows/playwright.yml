@@ -43,4 +43,4 @@ jobs:
           --data '{"text":"❌ Las pruebas Playwright fallaron en *${{ github.repository }}* (`${{ github.ref_name }}`)\n🔗 Commit: <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>\n💬 Autor: ${{ github.actor }}"}' \
           $SLACK_WEBHOOK_URL
       env:
-        SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
