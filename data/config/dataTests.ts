@@ -18,7 +18,7 @@ const tests: TGenericCopys[] = [
     {
         id: "despuesOtroUnicoId",
         description: "ruta de bogotá a barranquilla",
-        homeCiudadOrigen: "wxy",
+        homeCiudadOrigen: "MDE",
         homeCiudadDestino: "BOG",
         targetPage: "booking"
     }
