@@ -1,9 +1,11 @@
 name: Playwright Tests
+
 on:
   push:
     branches: [ 'develop' ]
   pull_request:
     branches: [ 'develop' ]
+
 jobs:
   test:
     timeout-minutes: 60
@@ -33,3 +35,12 @@ jobs:
         name: results-by-test
         path: results-by-test/
         retention-days: 30
+
+    - name: Notificar a Slack si fallan las pruebas
+      if: failure()
+      run: |
+        curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"❌ Las pruebas Playwright fallaron en *${{ github.repository }}* (`${{ github.ref_name }}`)\n🔗 Commit: <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>\n💬 Autor: ${{ github.actor }}"}' \
+          $SLACK_WEBHOOK_URL
+      env:
+        SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
