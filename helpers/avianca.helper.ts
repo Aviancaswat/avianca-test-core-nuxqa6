@@ -2,6 +2,7 @@ import type { Page, TestInfo } from "@playwright/test";
 import path from "path";
 import { genericCopys } from "../data/copys";
 import { HomeCopy as copys } from "../data/copys/home/home.copy";
+import { GLOBAL_MESSAGES as m } from "../global.variables";
 import type { Lang } from "../types/copy.type";
 
 type Tpage = Page | undefined | any;
@@ -27,6 +28,29 @@ const PlaywrightHelper = {
         const mi = pad(now.getMinutes());
         const ss = pad(now.getSeconds());
         return `${dd}_${mm}_${yyyy}-${hh}_${mi}_${ss}`;
+    },
+
+    async setDetailsTestScreenShot({ title, details }: { title: string, details: string }): Promise<void> {
+
+        if (!page) {
+            throw new Error(m.errors.initializated);
+        }
+
+        if (!title || !details) {
+            throw new Error("El titulo o los detalles no son válidos. Ingrese un valor válido")
+        }
+
+        try {
+            
+            await testInfo.attach(title, {
+                body: Buffer.from(details),
+                contentType: 'text/plain',
+            });
+        }
+        catch (error) {
+            console.error("DETAILSTESTSCREENSHOT => Ha ocurrido un error al establecer los detalles del screenshot de la test");
+            throw error;
+        }
     },
 
     async takeScreenshot(label: string): Promise<void> {
