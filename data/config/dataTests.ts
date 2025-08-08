@@ -2,11 +2,12 @@ import { TGenericCopys } from "../copys";
 
 const tests: TGenericCopys[] = [
     {
-        id: 1,
+        id: "id unico",
         description: "ruta de barranquilla a bogotá",
         homeCiudadOrigen: "BOG",
         homeCiudadDestino: "MDE",
-        homeisActiveOptionOutbound: false,
+        homeisActiveOptionOutbound: true,
+        homePassengerAdults: 4,
         targetPage: "home"
     }
 ]

@@ -22,6 +22,10 @@ export interface IHomeCopy {
         fr: HomeTranslation;
     },
     homeisActiveOptionOutbound: boolean;
+    homePassengerAdults: number;
+    homePassengerYouths: number;
+    homePassengerChildren: number;
+    homePassengerInfant: number;
     getLang: () => Lang;
 }
 
@@ -60,10 +64,15 @@ const HomeCopy: IHomeCopy = {
             homeBuscar: 'Rechercher',
             homeVuelta: 'Retour',
             homePagar: ' Continuer',
-        },
+        }
     },
     getLang: () => HomeCopy.homeIdioma,
-    homeisActiveOptionOutbound: true,
+    homeisActiveOptionOutbound: false,
+    homePassengerAdults: 2,
+    homePassengerYouths: 1,
+    homePassengerChildren: 0,
+    homePassengerInfant: 0
 }
 
 export { HomeCopy };
+
