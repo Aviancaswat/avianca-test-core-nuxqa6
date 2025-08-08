@@ -1,0 +1,11 @@
+.screeshot-details {
+    padding: 20px;
+    width: 100%;
+    background-color: #eeeeee;
+    border-radius: 10px;
+}
+
+.screenshot-title {
+    margin-bottom: 10px;
+    text-align: center;
+}
