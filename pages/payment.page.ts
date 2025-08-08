@@ -5,6 +5,7 @@ type TPage = Page | undefined | any;
 
 export type TPaymentPage = {
   initPage(page: TPage): void;
+  verifyCookies(): Promise<void>;
   fillBillingDetails(): Promise<void>;
   run(): Promise<void>;
 };
@@ -15,6 +16,33 @@ const PaymentPage: TPaymentPage = {
   initPage(pageP: TPage): void {
     page = pageP;
   },
+
+
+  async verifyCookies(): Promise<void> {
+
+    if (!page) {
+      throw new Error(m.errors.initializated);
+    }
+
+    try {
+
+      const consentBtn = await page.locator('#onetrust-pc-btn-handler', { delay: helper.getRandomDelay() });
+      const isVisible = await consentBtn.isVisible();
+
+      if (isVisible) {
+        await page.waitForSelector("#onetrust-pc-btn-handler");
+        await consentBtn.click();
+        await page.locator('.save-preference-btn-handler.onetrust-close-btn-handler').click({ delay: helper.getRandomDelay() });
+        await page.waitForTimeout(1000);
+        await page.evaluate(() => window.scrollTo(0, 0));
+      }
+    }
+    catch (error) {
+      console.error("COOKIES => Ocurrió un error al verificar las cookies | Error: ", error);
+      throw error;
+    }
+  },
+
 
   async fillBillingDetails(): Promise<void> {
     if (!page) throw new Error("PaymentPage => Page no ha sido inicializado");
@@ -67,6 +95,7 @@ const PaymentPage: TPaymentPage = {
 
   async run(): Promise<void> {
     console.log("Payment page started...");
+    await this.verifyCookies();
     await this.fillBillingDetails();
     console.log("Payment page ended...");
   },

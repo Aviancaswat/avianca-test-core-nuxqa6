@@ -30,13 +30,13 @@ const HomePage: THomePage = {
         page = pageP;
     },
 
-    async selectPassengerAdult(numberPassenger: number): Promise<void> {
+    async selectPassengerAdult(): Promise<void> {
 
         if (!page) {
             throw new Error(m.errors.initializated);
         }
 
-        if (numberPassenger <= 0) {
+        if (copys.homePassengerAdults! <= 0) {
             throw new Error("El número de pasajeros tiene que ser mayor a cero (0)");
         }
 
@@ -45,14 +45,14 @@ const HomePage: THomePage = {
             const modalPassenger = await page.locator("#paxControlSearchId").isVisible();
 
             if (modalPassenger) { // Si el modal de pasajeros esta abierto.
-                for (let i = 0; i < numberPassenger; i++) {
+                for (let i = 0; i < copys.homePassengerAdults!; i++) {
                     await page.getByRole('button', { name: '' }).nth(0).click();
                 }
             }
             else { // si el modal de pasajeros esta cerrado.
                 await page.locator('[aria-label="Pasajeros :1"]').click();
                 await page.waitForTimeout(1000);
-                for (let i = 0; i < numberPassenger; i++) {
+                for (let i = 0; i < copys.homePassengerAdults!; i++) {
                     await page.getByRole('button', { name: '' }).nth(0).click();
                 }
             }
@@ -64,13 +64,13 @@ const HomePage: THomePage = {
         }
     },
 
-    async selectPassengerYouths(numberPassenger: number): Promise<void> {
+    async selectPassengerYouths(): Promise<void> {
 
         if (!page) {
             throw new Error(m.errors.initializated);
         }
 
-        if (numberPassenger <= 0) {
+        if (copys.homePassengerYouths! <= 0) {
             throw new Error("El número de pasajeros tiene que ser mayor a cero (0)");
         }
 
@@ -79,14 +79,14 @@ const HomePage: THomePage = {
             const modalPassenger = await page.locator("#paxControlSearchId").isVisible();
 
             if (modalPassenger) { // Si el modal de pasajeros esta abierto.
-                for (let i = 0; i < numberPassenger; i++) {
+                for (let i = 0; i < copys.homePassengerYouths!; i++) {
                     await page.getByRole('button', { name: '' }).nth(1).click();
                 }
             }
             else { // si el modal de pasajeros esta cerrado.
                 await page.locator('[aria-label="Pasajeros :1"]').click();
                 await page.waitForTimeout(1000);
-                for (let i = 0; i < numberPassenger; i++) {
+                for (let i = 0; i < copys.homePassengerYouths!; i++) {
                     await page.getByRole('button', { name: '' }).nth(1).click();
                 }
             }
@@ -98,13 +98,13 @@ const HomePage: THomePage = {
         }
     },
 
-    async selectPassengerChildren(numberPassenger: number): Promise<void> {
+    async selectPassengerChildren(): Promise<void> {
 
         if (!page) {
             throw new Error(m.errors.initializated);
         }
 
-        if (numberPassenger <= 0) {
+        if (copys.homePassengerChildren! <= 0) {
             throw new Error("El número de pasajeros tiene que ser mayor a cero (0)");
         }
 
@@ -113,14 +113,14 @@ const HomePage: THomePage = {
             const modalPassenger = await page.locator("#paxControlSearchId").isVisible();
 
             if (modalPassenger) { // Si el modal de pasajeros esta abierto.
-                for (let i = 0; i < numberPassenger; i++) {
+                for (let i = 0; i < copys.homePassengerChildren!; i++) {
                     await page.getByRole('button', { name: '' }).nth(2).click();
                 }
             }
             else { // si el modal de pasajeros esta cerrado.
                 await page.locator('[aria-label="Pasajeros :1"]').click();
                 await page.waitForTimeout(1000);
-                for (let i = 0; i < numberPassenger; i++) {
+                for (let i = 0; i < copys.homePassengerChildren!; i++) {
                     await page.getByRole('button', { name: '' }).nth(2).click();
                 }
             }
@@ -133,13 +133,13 @@ const HomePage: THomePage = {
     },
 
     //el número de bebes que se pueden seleccionar depende del número de adultos seleccionados
-    async selectPassengerInfant(numberPassenger: number): Promise<void> {
+    async selectPassengerInfant(): Promise<void> {
 
         if (!page) {
             throw new Error(m.errors.initializated);
         }
 
-        if (numberPassenger <= 0) {
+        if (copys.homePassengerInfant! <= 0) {
             throw new Error("El número de pasajeros tiene que ser mayor a cero (0)");
         }
 
@@ -148,14 +148,14 @@ const HomePage: THomePage = {
             const modalPassenger = await page.locator("#paxControlSearchId").isVisible();
 
             if (modalPassenger) { // Si el modal de pasajeros esta abierto.
-                for (let i = 0; i < numberPassenger; i++) {
+                for (let i = 0; i < copys.homePassengerInfant!; i++) {
                     await page.getByRole('button', { name: '' }).nth(3).click();
                 }
             }
             else { // si el modal de pasajeros esta cerrado.
                 await page.locator('[aria-label="Pasajeros :1"]').click();
                 await page.waitForTimeout(1000);
-                for (let i = 0; i < numberPassenger; i++) {
+                for (let i = 0; i < copys.homePassengerInfant!; i++) {
                     await page.getByRole('button', { name: '' }).nth(3).click();
                 }
             }
@@ -232,7 +232,7 @@ const HomePage: THomePage = {
 
         try {
 
-           const lang = helper.getLang();
+            const lang = helper.getLang();
             const wrapperOrigin = page.locator('#originBtn');
             await expect(wrapperOrigin).toBeVisible({ timeout: 20_000 });
             await wrapperOrigin.click();
@@ -299,15 +299,18 @@ const HomePage: THomePage = {
             throw new Error(m.errors.initializated);
         }
 
-        try {
+        if (!copys.homeisActiveOptionOutbound) {
 
-            await page.waitForTimeout(3000);
-            await page.locator('span').filter({ hasText: copys.homeFechaLLegada }).click({ delay: helper.getRandomDelay() });
-            await helper.takeScreenshot('seleccion-fecha-vuelta');
-        }
-        catch (error) {
-            console.error("Home => Ocurrió un error al seleccionar la fecha de regreso, Error: ", error);
-            throw error;
+            try {
+
+                await page.waitForTimeout(3000);
+                await page.locator('span').filter({ hasText: copys.homeFechaLLegada }).click({ delay: helper.getRandomDelay() });
+                await helper.takeScreenshot('seleccion-fecha-vuelta');
+            }
+            catch (error) {
+                console.error("Home => Ocurrió un error al seleccionar la fecha de regreso, Error: ", error);
+                throw error;
+            }
         }
     },
 
@@ -318,9 +321,31 @@ const HomePage: THomePage = {
         }
 
         try {
-            await page.getByRole('button', { name: '' }).nth(1).click();
-            await page.getByRole('button', { name: '' }).nth(2).click();
-            await page.getByRole('button', { name: '' }).nth(3).click();
+
+            if (copys.homePassengerAdults! > 0) {
+                for (let i = 0; i < copys.homePassengerAdults!; i++) {
+                    await page.getByRole('button', { name: '' }).nth(0).click();
+                }
+            }
+
+            if (copys.homePassengerYouths! > 0) {
+                for (let i = 0; i < copys.homePassengerYouths!; i++) {
+                    await page.getByRole('button', { name: '' }).nth(1).click();
+                }
+            }
+
+            if (copys.homePassengerChildren! > 0) {
+                for (let i = 0; i < copys.homePassengerChildren!; i++) {
+                    await page.getByRole('button', { name: '' }).nth(2).click();
+                }
+            }
+
+            if (copys.homePassengerInfant! > 0) {
+                for (let i = 0; i < copys.homePassengerInfant!; i++) {
+                    await page.getByRole('button', { name: '' }).nth(3).click();
+                }
+            }
+
             const confirmar = await page.locator('div#paxControlSearchId > div > div:nth-of-type(2) > div > div > button')
             confirmar.click({ delay: helper.getRandomDelay() });
             await helper.takeScreenshot('seleccion-pasajeros');
@@ -354,6 +379,7 @@ const HomePage: THomePage = {
     async run(): Promise<void> {
         console.log("Run Home ejecutado");
         await this.verifyCookies();
+        await this.selectOptionTypeFlight();
         await this.selectOriginOption();
         await this.selectReturnOption();
         await this.selectDepartureDate();
@@ -365,3 +391,4 @@ const HomePage: THomePage = {
 };
 
 export { HomePage };
+
