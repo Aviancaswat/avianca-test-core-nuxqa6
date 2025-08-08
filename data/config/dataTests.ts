@@ -2,25 +2,12 @@ import { TGenericCopys } from "../copys";
 
 const tests: TGenericCopys[] = [
     {
-        id: "miUnicoId",
+        id: 1,
         description: "ruta de barranquilla a bogotá",
-        homeCiudadOrigen: "BAQ",
-        homeCiudadDestino: "BOG",
+        homeCiudadOrigen: "BOG",
+        homeCiudadDestino: "MDE",
+        homeisActiveOptionOutbound: false,
         targetPage: "home"
-    },
-    {
-        id: "otroUnicoId",
-        description: "ruta de bogotá a barranquilla",
-        homeCiudadOrigen: "BAQ",
-        homeCiudadDestino: "BOG",
-        targetPage: "home"
-    },
-    {
-        id: "despuesOtroUnicoId",
-        description: "ruta de bogotá a barranquilla",
-        homeCiudadOrigen: "wxy",
-        homeCiudadDestino: "BOG",
-        targetPage: "booking"
     }
 ]
 
