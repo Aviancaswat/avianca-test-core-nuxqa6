@@ -1,10 +1,10 @@
 import { TGenericCopys } from "../copys";
 
-const tests: TGenericCopys[] = [
-    {
+export const tests: TGenericCopys[] = [
+{
         id: "miUnicoId",
         description: "ruta de barranquilla a bogotá",
-        homeCiudadOrigen: "BAQ",
+        homeCiudadOrigen: "MDE",
         homeCiudadDestino: "BOG",
         targetPage: "home"
     },
@@ -15,7 +15,5 @@ const tests: TGenericCopys[] = [
         homeCiudadDestino: "BOG",
         targetPage: "home"
     }
-]
-
-export { tests };
+];export { tests };
 

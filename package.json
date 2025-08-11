@@ -2,14 +2,58 @@
   "name": "modular-playwright-funcional",
   "version": "1.0.0",
   "description": "Playwright + Dashboard web (Express + UI) para ejecutar pruebas y descargar reporte",
-  "main": "index.js",
+  "main": "electron/main.js",
   "type": "commonjs",
   "scripts": {
     "test:e2e": "playwright test",
     "test:e2e:headed": "cross-env HEADLESS=0 playwright test",
     "dev:server": "nodemon --watch server --ext ts --exec ts-node server/index.ts",
     "dev": "npm run dev:server",
-    "report:open": "playwright show-report"
+    "report:open": "playwright show-report",
+    "build:server": "tsc -p tsconfig.json --outDir dist-server",
+    "dev:desktop": "npm run build:server && electron .",
+    "build:desktop": "npm run build:server && electron-builder"
+  },
+  "build": {
+    "appId": "com.tuempresa.playwrightdashboard",
+    "productName": "Playwright Test Dashboard",
+    "directories": {
+      "output": "dist-desktop",
+      "buildResources": "build"
+    },
+    "files": [
+      "server/**/*",
+      "webui/**/*",
+      "electron/**/*",
+      "dist-server/**/*",
+      "package.json"
+    ],
+    "asar": false,
+    "extraResources": [
+      {
+        "from": "playwright-report",
+        "to": "playwright-report"
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
+      "createDesktopShortcut": true,
+      "shortcutName": "Playwright Test Dashboard"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "build/icon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "build"
+    }
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0",
@@ -17,15 +61,18 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^4.17.23",
     "@types/node": "^22.17.0",
+    "concurrently": "^9.2.0",
     "cross-env": "^7.0.3",
+    "electron": "^37.2.6",
+    "electron-builder": "^26.0.12",
     "nodemon": "^3.1.7",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.9.2"
   },
   "dependencies": {
     "archiver": "^7.0.1",
     "cors": "^2.8.5",
-    "express": "^4.19.2",
+    "express": "^4.21.2",
     "playwright-extra": "^4.3.6"
   }
 }
