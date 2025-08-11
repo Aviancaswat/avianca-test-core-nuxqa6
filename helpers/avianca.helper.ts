@@ -34,29 +34,18 @@ const PlaywrightHelper = {
 
     async updateFileReport() {
         const reportePath = path.join(__dirname, '..', 'playwright-report', 'index.html');
-
-        // Imprimir la ruta para verificar que es la correcta
         console.log('Ruta al archivo HTML:', reportePath);
 
         try {
-            // Verificar si el archivo existe
             await fs.access(reportePath, fs.constants.F_OK);
-
-            // Leer el contenido del archivo HTML
             const data = await fs.readFile(reportePath, 'utf8');
-
-            // Agregar el código JS justo antes de la etiqueta </body>
             const nuevoCodigoJs = `
             <script>
                 console.log("Este es un código JS añadido dinámicamente.");
                 alert("¡Prueba exitosa!");
             </script>
         `;
-
-            // Insertar el script antes de </body>
             const nuevoHtml = data.replace('</body>', `${nuevoCodigoJs}</body>`);
-
-            // Guardar el archivo modificado
             await fs.writeFile(reportePath, nuevoHtml, 'utf8');
             console.log('Archivo HTML modificado exitosamente');
         } catch (err) {
