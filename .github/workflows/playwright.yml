@@ -2,45 +2,49 @@ name: Playwright Tests
 
 on:
   push:
-    branches: [ 'develop' ]
+    branches: [ 'feat/notificacionSlack' ]
   pull_request:
-    branches: [ 'develop' ]
+    branches: [ 'feat/notificacionSlack' ]
 
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    - name: Install dependencies
-      run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Run Playwright tests
-      run: npx playwright test
-    - name: Upload Playwright Report
-      uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
-    - name: Resultados separado por tests
-      uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
-      with:
-        name: results-by-test
-        path: results-by-test/
-        retention-days: 30
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Run Playwright tests
+        run: npx playwright test
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+      - name: Resultados separado por tests
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: results-by-test
+          path: results-by-test/
+          retention-days: 30
 
-    - name: Notificar a Slack si fallan las pruebas
-      if: failure()
-      run: |
-        curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"❌ Las pruebas Playwright fallaron en *${{ github.repository }}* (`${{ github.ref_name }}`)\n🔗 Commit: <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>\n💬 Autor: ${{ github.actor }}"}' \
-          $SLACK_WEBHOOK_URL
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  notification:
+    needs: test
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+      - name: Notificar a Slack si fallan las pruebas
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{"text":"❌ Las pruebas Playwright fallaron en *${{ github.repository }}* (`${{ github.ref_name }}`)\n🔗 Commit: <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>\n💬 Autor: ${{ github.actor }}"}' \
+            $SLACK_WEBHOOK_URL
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
