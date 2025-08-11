@@ -44,10 +44,5 @@ jobs:
       - name: Notificar a Slack si fallan las pruebas
         run: |
           curl -X POST -H 'Content-type: application/json' \
-            --data '{"text":"❌ Las pruebas Playwright fallaron en ' \
+            --data '{"text":"❌ Las pruebas Playwright fallaron"}' \
             ${{ secrets.SLACK_WEBHOOK_URL }}
-        
-
-
-
-          
