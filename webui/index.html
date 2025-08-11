@@ -1,49 +1,419 @@
-<!-- webui/index.html (suma/ajusta el contenido del <body>) -->
-<h1>Playwright Dashboard</h1>
+<!doctype html>
+<html lang="es">
 
-<label>
-  Spec a ejecutar:
-  <input id="spec" value="tests/avianca.spec.ts" style="width: 320px;" />
-</label>
-<label style="margin-left:12px;">
-  <input type="checkbox" id="headed" />
-  Ejecutar en headed (mostrar navegador)
-</label>
+<head>
+    <meta charset="utf-8" />
+    <title>Playwright Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        :root {
+            --bg: #f9fafb;
+            --panel: #ffffff;
+            --muted: #6b7280;
+            --text: #1f2937;
+            --accent: #2563eb;
+            --accent-2: #16a34a;
+            --danger: #dc2626;
+            --border: #d1d5db;
+        }
 
-<div class="row" style="margin-top:12px;">
-  <button id="run">▶ Ejecutar pruebas</button>
-  <a id="open" href="/report/" target="_blank" style="display:none">Abrir reporte</a>
-  <a id="download" href="/download-report">Descargar reporte</a>
-</div>
+        * {
+            box-sizing: border-box;
+        }
 
-<h3>Logs</h3>
-<pre id="logs">—</pre>
+        body {
+            margin: 0;
+            padding: 24px;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+            background: var(--bg);
+            color: var(--text);
+        }
 
-<script>
-  const runBtn = document.getElementById('run');
-  const openLink = document.getElementById('open');
-  const logsPre = document.getElementById('logs');
-  const specInput = document.getElementById('spec');
-  const headedCb = document.getElementById('headed');
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
 
-  runBtn.onclick = async () => {
-    logsPre.textContent = 'Ejecutando...';
-    openLink.style.display = 'none';
+        h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 0 16px;
+            letter-spacing: .2px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
 
-    const res = await fetch('/run-tests', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        spec: specInput.value || 'tests/avianca.spec.ts',
-        headless: !headedCb.checked
-      })
-    });
+        .status {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: #e5e7eb;
+            color: #374151;
+        }
 
-    const data = await res.json();
-    logsPre.textContent = (data.logs || '') + '\n' + (data.errors || '');
+        .status.ok {
+            color: #065f46;
+            border-color: #6ee7b7;
+            background: #d1fae5;
+        }
 
-    if (data.reportReady) {
-      openLink.style.display = 'inline-block';
-    }
-  };
-</script>
+        .status.err {
+            color: #7f1d1d;
+            border-color: #fca5a5;
+            background: #fee2e2;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        @media (min-width: 960px) {
+            .grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .05);
+        }
+
+        .card h2 {
+            font-size: 16px;
+            margin: 0 0 12px;
+        }
+
+        label {
+            font-size: 12px;
+            color: var(--muted);
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 240px;
+            border: 1px solid var(--border);
+            background: #f9fafb;
+            color: var(--text);
+            border-radius: 10px;
+            padding: 10px 12px;
+            outline: none;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+            font-size: 12px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: 1px solid var(--border);
+            background: #f3f4f6;
+            color: var(--text);
+            padding: 10px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: .15s ease;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            background: #e5e7eb;
+        }
+
+        .btn.primary {
+            background: var(--accent);
+            border-color: transparent;
+            color: white;
+        }
+
+        .btn.success {
+            background: var(--accent-2);
+            border-color: transparent;
+            color: white;
+        }
+
+        .btn.ghost {
+            background: transparent;
+        }
+
+        .btn.danger {
+            background: var(--danger);
+            border-color: transparent;
+            color: white;
+        }
+
+        a.btn {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .muted {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .logs {
+            background: #f9fafb;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            min-height: 180px;
+            max-height: 360px;
+            overflow: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+
+        .toast {
+            position: fixed;
+            right: 16px;
+            bottom: 16px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px 12px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .05);
+            opacity: 0;
+            transform: translateY(8px);
+            transition: .2s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.ok {
+            border-color: rgba(22, 163, 74, .5);
+        }
+
+        .toast.err {
+            border-color: rgba(239, 68, 68, .5);
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: #e5e7eb;
+            color: #1e3a8a;
+            border: 1px solid var(--border);
+        }
+
+        .hint {
+            font-size: 11px;
+            color: var(--muted);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>
+            Playwright Test Dashboard
+            <span id="status" class="status">sin ejecutar</span>
+            <span id="lastRun" class="hint"></span>
+        </h1>
+
+        <div class="grid">
+            <!-- Ejecutar pruebas -->
+            <section class="card">
+                <h2>Ejecutar pruebas</h2>
+
+                <div class="actions" style="margin-top:12px">
+                    <button id="runBtn" class="btn primary">▶ Ejecutar pruebas</button>
+                    <a id="openReport" class="btn ghost" href="/report/" target="_blank" style="display:none">Abrir
+                        reporte</a>
+                    <a id="downloadReport" class="btn ghost" href="/download-report" target="_blank"
+                        style="display:none">Descargar reporte</a>
+                </div>
+
+                <div style="margin-top:14px">
+                    <label>Logs</label>
+                    <div id="logs" class="logs">—</div>
+                </div>
+            </section>
+
+            <!-- Pegar bloque completo para dataTests.ts -->
+            <section class="card">
+                <h2>Editar parametros para prueba automatizada</h2>
+
+                <div>
+                    <label>Bloque a insertar</label>
+                    <textarea id="bulk" spellcheck="false" placeholder='Pega aquí objetos tipo:
+{
+  id: "miUnicoId",
+  description: "ruta...",
+  homeCiudadOrigen: "BAQ",
+  homeCiudadDestino: "BOG",
+  targetPage: "home"
+},
+{
+  id: "miOtroId",
+  description: "ruta...",
+  homeCiudadOrigen: "MDE",
+  homeCiudadDestino: "BOG",
+  targetPage: "home"
+}'></textarea>
+                    <div class="muted">Puedes pegar varios objetos separados por coma.</div>
+                </div>
+
+                <div class="actions" style="margin-top:12px">
+                    <button id="loadBlock" class="btn ghost">Cargar bloque actual</button>
+                    <button id="saveBlock" class="btn success">💾 Guardar bloque</button>
+                    <button id="saveAndRun" class="btn primary">💾 Guardar bloque y ejecutar</button>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">Mensaje</div>
+
+    <script>
+        const $ = (id) => document.getElementById(id);
+        const runBtn = $('runBtn');
+        const openReport = $('openReport');
+        const downloadReport = $('downloadReport');
+        const logsBox = $('logs');
+        const statusEl = $('status');
+        const lastRunEl = $('lastRun');
+
+        const bulk = $('bulk');
+        const loadBlockBtn = $('loadBlock');
+        const saveBlockBtn = $('saveBlock');
+        const saveAndRunBtn = $('saveAndRun');
+
+        // Ocultar "Descargar reporte" mientras esté "sin ejecutar"
+        downloadReport.style.display = 'none';
+
+        function toast(msg, ok = true) {
+            const el = $('toast');
+            el.textContent = msg;
+            el.classList.remove('ok', 'err', 'show');
+            el.classList.add(ok ? 'ok' : 'err');
+            requestAnimationFrame(() => {
+                el.classList.add('show');
+                setTimeout(() => el.classList.remove('show'), 2200);
+            });
+        }
+
+        function setRunningState(running) {
+            runBtn.disabled = running;
+            saveAndRunBtn.disabled = running;
+            runBtn.textContent = running ? '⏳ Ejecutando...' : '▶ Ejecutar pruebas';
+            saveAndRunBtn.textContent = running ? '⏳ Guardando y ejecutando...' : '💾 Guardar bloque y ejecutar';
+        }
+
+        function setStatus(ok, msg) {
+            statusEl.classList.remove('ok', 'err');
+            if (ok === true) statusEl.classList.add('ok');
+            if (ok === false) statusEl.classList.add('err');
+            statusEl.textContent = msg;
+            lastRunEl.textContent = ' • ' + new Date().toLocaleString();
+
+            // Mostrar/ocultar "Descargar reporte" según estado
+            if (msg === 'OK' || msg === 'Fallo') {
+                downloadReport.style.display = 'inline-flex';
+            } else {
+                downloadReport.style.display = 'none';
+            }
+        }
+
+        async function runTests() {
+            try {
+                setRunningState(true);
+                openReport.style.display = 'none';
+                logsBox.textContent = 'Ejecutando...';
+                const res = await fetch('/run-tests', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({})
+                });
+                const data = await res.json();
+                logsBox.textContent = (data.logs || '') + '\n' + (data.errors || '');
+                if (data.ok) {
+                    toast('Pruebas ejecutadas');
+                    setStatus(true, 'OK');
+                    if (data.reportReady) {
+                        openReport.style.display = 'inline-flex';
+                    }
+                } else {
+                    toast(data.message || 'Falló la ejecución', false);
+                    setStatus(false, 'Fallo');
+                    if (data.reportReady) {
+                        openReport.style.display = 'inline-flex';
+                    }
+                }
+            } catch (err) {
+                toast(String(err), false);
+                logsBox.textContent = String(err);
+                setStatus(false, 'Error');
+            } finally {
+                setRunningState(false);
+            }
+        }
+
+        async function saveBlock() {
+            const block = bulk.value;
+            if (!block || !block.trim()) {
+                toast('Pega el bloque antes de guardar.', false);
+                return false;
+            }
+            const res = await fetch('/set-tests-bulk', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ block })
+            });
+            const data = await res.json();
+            if (data.ok) {
+                toast('Bloque guardado ✔');
+                return true;
+            } else {
+                toast(data.message || 'No se pudo guardar', false);
+                return false;
+            }
+        }
+
+        runBtn.onclick = runTests;
+
+        loadBlockBtn.onclick = async () => {
+            try {
+                const res = await fetch('/get-tests-body');
+                const data = await res.json();
+                if (data.ok) {
+                    bulk.value = (data.body || '').trim(); // limpio
+                    toast('Bloque cargado');
+                } else {
+                    toast(data.message || 'No se pudo cargar', false);
+                }
+            } catch (err) {
+                toast(String(err), false);
+            }
+        };
+
+        saveBlockBtn.onclick = async () => { await saveBlock(); };
+
+        saveAndRunBtn.onclick = async () => {
+            const ok = await saveBlock();
+            if (ok) await runTests();
+        };
+    </script>
+</body>
+
+</html>
