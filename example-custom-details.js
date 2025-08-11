@@ -1,33 +1,37 @@
+import { SCREENSHOTS_DETAILS } from "./helpers/avianca.helper";
+
 export const setCustomsDetails = () => {
     setTimeout(() => {
 
         const screenShots = document.querySelectorAll("img.screenshot");
 
         screenShots.forEach((screen, index) => {
+
             const containerDetails = document.createElement("div");
             containerDetails.className = "screeshot-details";
 
-            // Creación de título y descripción
+            const titleDetailsHTML = document.createElement("strong");
+            titleDetailsHTML.className = "screenshot-title";
+            titleDetailsHTML.innerText = "Detalles del screeshot";
             const titleHTML = document.createElement("strong");
             titleHTML.innerHTML = `Paso ${index}: `;
             const descriptionHTML = document.createElement("strong");
             descriptionHTML.innerHTML = `Detalles: `;
 
-            // Creación de texto para los detalles
             const titleText = document.createElement("span");
-            titleText.innerHTML = `Titulo del paso que se ejecutó`;
+            titleText.innerHTML = SCREENSHOTS_DETAILS[index];
             const descriptionText = document.createElement("span");
-            descriptionText.innerHTML = `Detalles del paso que se ejecutó`;
+            descriptionText.innerHTML = SCREENSHOTS_DETAILS[index];
 
-            // Anexamos los elementos a containerDetails
+            containerDetails.appendChild(titleDetailsHTML);
+            containerDetails.appendChild(document.createElement("br"));
             containerDetails.appendChild(titleHTML);
             containerDetails.appendChild(titleText);
             containerDetails.appendChild(document.createElement("br"));
             containerDetails.appendChild(descriptionHTML);
             containerDetails.appendChild(descriptionText);
 
-            // Insertamos el containerDetails después de la imagen
             screen.parentElement.parentElement.append(containerDetails);
         })
-    }, 3500);
+    }, 3000);
 }

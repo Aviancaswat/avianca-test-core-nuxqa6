@@ -242,10 +242,10 @@ const HomePage: THomePage = {
             await origen.press('Enter');
             await page.waitForTimeout(1500);
             await (page.locator('id=' + copys.homeCiudadOrigen)).click({ delay: helper.getRandomDelay() })
-            // await helper.setDetailsTestScreenShot({
-            //     title: "selección del origen",
-            //     details: "Se selecciona en la test la opción de la ciudad de origen"
-            // })
+            await helper.addDetailsScreenShot({
+                title: "selección del origen",
+                details: "Se selecciona en la test la opción de la ciudad de origen"
+            })
             await helper.takeScreenshot('ciudad-origen');
             await page.waitForTimeout(2000);
         }

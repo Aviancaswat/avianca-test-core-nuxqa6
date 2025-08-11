@@ -38,4 +38,6 @@ type copysType = {
     getLang: () => Lang
 }
 
-export type { copysType, Lang };
+type TScreenshotDetails = { title: string, details: string };
+
+export type { copysType, Lang, TScreenshotDetails };

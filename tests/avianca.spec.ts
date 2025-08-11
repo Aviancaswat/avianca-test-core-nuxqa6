@@ -49,7 +49,22 @@ data.forEach(itemTest => {
       await AviancaCore.closeBrowser();
       page = undefined;
       setDataTest({});
+
+      console.log("Se finaliza la prueba");
+
     });
+
+    test.afterAll(async () => {
+      
+      try {
+
+        console.log("Esperando a actualizar el reporte");
+        await helper.updateFileReport();
+      }
+      catch (error) {
+        console.log("Ocurrio un error al actualizar el reporte: ", error);
+      }
+    })
 
     const { targetPage } = itemTest;
     const finalTargetPage = targetPage ?? "home";

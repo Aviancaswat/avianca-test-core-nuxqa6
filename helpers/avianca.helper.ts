@@ -1,21 +1,23 @@
 import type { Page, TestInfo } from "@playwright/test";
+import { promises as fs } from 'fs';
 import path from "path";
 import { genericCopys } from "../data/copys";
 import { HomeCopy as copys } from "../data/copys/home/home.copy";
-import { GLOBAL_MESSAGES as m } from "../global.variables";
-import type { Lang } from "../types/copy.type";
+import type { Lang, TScreenshotDetails } from "../types/copy.type";
 
 type Tpage = Page | undefined | any;
 
 let page: Tpage;
 let screenshotCounter: number = 0;
 let testInfo: TestInfo;
+export let SCREENSHOTS_DETAILS: TScreenshotDetails[] = [];
 
 const PlaywrightHelper = {
 
     init(pageP: Tpage, testInfoP: TestInfo) {
         page = pageP;
         testInfo = testInfoP;
+        SCREENSHOTS_DETAILS = [];
     },
 
     getTimestamp(): string {
@@ -30,27 +32,41 @@ const PlaywrightHelper = {
         return `${dd}_${mm}_${yyyy}-${hh}_${mi}_${ss}`;
     },
 
-    async setDetailsTestScreenShot({ title, details }: { title: string, details: string }): Promise<void> {
+    async updateFileReport() {
+        const reportePath = path.join(__dirname, '..', 'playwright-report', 'index.html');
 
-        if (!page) {
-            throw new Error(m.errors.initializated);
-        }
-
-        if (!title || !details) {
-            throw new Error("El titulo o los detalles no son válidos. Ingrese un valor válido")
-        }
+        // Imprimir la ruta para verificar que es la correcta
+        console.log('Ruta al archivo HTML:', reportePath);
 
         try {
-            
-            await testInfo.attach(title, {
-                body: Buffer.from(details),
-                contentType: 'text/plain',
-            });
+            // Verificar si el archivo existe
+            await fs.access(reportePath, fs.constants.F_OK);
+
+            // Leer el contenido del archivo HTML
+            const data = await fs.readFile(reportePath, 'utf8');
+
+            // Agregar el código JS justo antes de la etiqueta </body>
+            const nuevoCodigoJs = `
+            <script>
+                console.log("Este es un código JS añadido dinámicamente.");
+                alert("¡Prueba exitosa!");
+            </script>
+        `;
+
+            // Insertar el script antes de </body>
+            const nuevoHtml = data.replace('</body>', `${nuevoCodigoJs}</body>`);
+
+            // Guardar el archivo modificado
+            await fs.writeFile(reportePath, nuevoHtml, 'utf8');
+            console.log('Archivo HTML modificado exitosamente');
+        } catch (err) {
+            console.error('Error al intentar modificar el reporte:', err);
         }
-        catch (error) {
-            console.error("DETAILSTESTSCREENSHOT => Ha ocurrido un error al establecer los detalles del screenshot de la test");
-            throw error;
-        }
+    },
+
+    async addDetailsScreenShot({ title, details }: TScreenshotDetails): Promise<void> {
+        if (!title || !details) throw new Error("El titulo o los detalles no son válidos. Ingrese un valor válido")
+        SCREENSHOTS_DETAILS.push({ title, details })
     },
 
     async takeScreenshot(label: string): Promise<void> {
