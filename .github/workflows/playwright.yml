@@ -38,13 +38,16 @@ jobs:
 
   notification:
     needs: test
-    runs-on: ubuntu-latest
     if: failure()
+    runs-on: ubuntu-latest
     steps:
       - name: Notificar a Slack si fallan las pruebas
         run: |
           curl -X POST -H 'Content-type: application/json' \
-            --data '{"text":"❌ Las pruebas Playwright fallaron en *${{ github.repository }}* (`${{ github.ref_name }}`)\n🔗 Commit: <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>\n💬 Autor: ${{ github.actor }}"}' \
+            --data '{"text":"❌ Las pruebas Playwright fallaron en ' \
             $SLACK_WEBHOOK_URL
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        
+
+
+
+          
