@@ -12,8 +12,47 @@ app.use(express.json());
 
 const ROOT = process.cwd();
 const REPORT_DIR = path.join(ROOT, 'playwright-report');
+const DATA_TESTS_PATH = path.join(ROOT, 'data', 'config', 'dataTests.ts');
 
-// Ejecutar pruebas exactamente sobre el spec indicado (default: tests/avianca.spec.ts)
+// Plantilla base si no existe el archivo
+const DATA_TESTS_TEMPLATE = `import { TGenericCopys } from "../copys";
+
+const tests: TGenericCopys[] = [
+
+]
+
+export { tests };
+`;
+
+// Asegura que exista carpeta/archivo
+function ensureDataTestsFile() {
+  const dir = path.dirname(DATA_TESTS_PATH);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  if (!fs.existsSync(DATA_TESTS_PATH)) {
+    fs.writeFileSync(DATA_TESTS_PATH, DATA_TESTS_TEMPLATE, 'utf-8');
+  }
+}
+
+// Extrae el cuerpo del array tests
+function extractArrayBody(code: string): string | null {
+  const reArray = /const\s+tests\s*:\s*TGenericCopys\[\]\s*=\s*\[(?<body>[\s\S]*?)\]\s*;/m;
+  const m = code.match(reArray);
+  return m?.groups?.body ?? null;
+}
+
+// Reemplaza el contenido del array tests
+function replaceArrayBody(code: string, newBody: string): string {
+  const reArray = /const\s+tests\s*:\s*TGenericCopys\[\]\s*=\s*\[[\s\S]*?\]\s*;/m;
+  const prettyBody = `\n${newBody.trim()}\n`;
+  return code.replace(
+    reArray,
+    `const tests: TGenericCopys[] = [${prettyBody}];`
+  );
+}
+
+// === RUTAS ===
+
+// Ejecutar pruebas
 app.post('/run-tests', async (req: Request, res: Response) => {
   const specFromBody: string = (req.body?.spec as string) || 'tests/avianca.spec.ts';
   const headlessFlag: boolean | undefined = req.body?.headless;
@@ -30,17 +69,14 @@ app.post('/run-tests', async (req: Request, res: Response) => {
       });
     }
 
-    // limpiar reporte previo
     if (fs.existsSync(REPORT_DIR)) {
       fs.rmSync(REPORT_DIR, { recursive: true, force: true });
     }
 
-    // Resolver CLI de @playwright/test y ejecutarlo con el Node actual (sin npx)
     const pwPkg = require.resolve('@playwright/test/package.json', { paths: [ROOT] });
     const pwDir = path.dirname(pwPkg);
     const pwCli = path.join(pwDir, 'cli.js');
 
-    // HEADLESS=0 => headed; por defecto headless
     const env = { ...process.env, HEADLESS: '1' };
     if (typeof headlessFlag === 'boolean') {
       env.HEADLESS = headlessFlag ? '1' : '0';
@@ -92,10 +128,53 @@ app.post('/run-tests', async (req: Request, res: Response) => {
   }
 });
 
-// Servir el reporte HTML de Playwright
+// Obtener bloque actual (limpio)
+app.get('/get-tests-body', (req: Request, res: Response) => {
+  try {
+    ensureDataTestsFile();
+    const code = fs.readFileSync(DATA_TESTS_PATH, 'utf-8');
+    const body = extractArrayBody(code);
+    if (body === null) {
+      return res.status(500).json({ ok: false, message: 'No se encontró el array tests en dataTests.ts' });
+    }
+    return res.json({ ok: true, body: body.trim() }); // ← limpiamos espacios/saltos
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    return res.status(500).json({ ok: false, message });
+  }
+});
+
+// Guardar bloque completo
+app.post('/set-tests-bulk', (req: Request, res: Response) => {
+  try {
+    ensureDataTestsFile();
+
+    const block: unknown = req.body?.block;
+    if (typeof block !== 'string' || block.trim().length === 0) {
+      return res.status(400).json({ ok: false, message: 'Envía "block" (string) con el contenido a insertar.' });
+    }
+
+    const code = fs.readFileSync(DATA_TESTS_PATH, 'utf-8');
+    const currentBody = extractArrayBody(code);
+    if (currentBody === null) {
+      return res.status(500).json({ ok: false, message: 'No se encontró el array tests en dataTests.ts' });
+    }
+
+    const updated = replaceArrayBody(code, block);
+    fs.writeFileSync(DATA_TESTS_PATH, updated, 'utf-8');
+
+    return res.json({ ok: true, message: 'Bloque aplicado correctamente', file: path.relative(ROOT, DATA_TESTS_PATH) });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    return res.status(500).json({ ok: false, message });
+  }
+});
+
+
+// Servir reporte HTML
 app.use('/report', express.static(REPORT_DIR));
 
-// Descargar el reporte como ZIP
+// Descargar reporte ZIP
 app.get('/download-report', (req: Request, res: Response) => {
   if (!fs.existsSync(REPORT_DIR)) {
     return res.status(404).json({ ok: false, message: 'No hay reporte. Ejecuta primero las pruebas.' });
@@ -110,9 +189,9 @@ app.get('/download-report', (req: Request, res: Response) => {
   archive.finalize();
 });
 
-// Servir la UI estática
+// Servir UI estática
 app.use('/', express.static(path.join(ROOT, 'webui')));
 
-// Arranque del servidor
+// Arrancar servidor
 const PORT = 5170;
 app.listen(PORT, () => console.log(`Server ready on http://localhost:${PORT}`));
