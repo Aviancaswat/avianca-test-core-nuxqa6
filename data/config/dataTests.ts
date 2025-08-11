@@ -3,7 +3,7 @@ import { TGenericCopys } from "../copys";
 export const tests: TGenericCopys[] = [
 {
         id: "miUnicoId",
-        description: "ruta de barranquilla a bogotá",
+        description: "ruta de Medellin a bogotá",
         homeCiudadOrigen: "MDE",
         homeCiudadDestino: "BOG",
         targetPage: "home"
@@ -15,5 +15,5 @@ export const tests: TGenericCopys[] = [
         homeCiudadDestino: "BOG",
         targetPage: "home"
     }
-];export { tests };
+];
 
