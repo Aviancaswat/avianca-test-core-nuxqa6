@@ -45,7 +45,7 @@ jobs:
         run: |
           curl -X POST -H 'Content-type: application/json' \
             --data '{"text":"❌ Las pruebas Playwright fallaron en ' \
-            $SLACK_WEBHOOK_URL
+            ${{ secrets.SLACK_WEBHOOK_URL }}
         
 
 
