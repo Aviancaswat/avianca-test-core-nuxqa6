@@ -233,7 +233,7 @@ const HomePage: THomePage = {
         try {
 
             const lang = helper.getLang();
-            const wrapperOrigin = page.locator('#originBtn');
+            const wrapperOrigin = page.locator('#ortn');
             await expect(wrapperOrigin).toBeVisible({ timeout: 20_000 });
             await wrapperOrigin.click();
             const origen = page.getByPlaceholder((copys.home?.es.homeOrigen));
