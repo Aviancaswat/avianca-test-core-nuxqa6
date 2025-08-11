@@ -1,0 +1,49 @@
+<!-- webui/index.html (suma/ajusta el contenido del <body>) -->
+<h1>Playwright Dashboard</h1>
+
+<label>
+  Spec a ejecutar:
+  <input id="spec" value="tests/avianca.spec.ts" style="width: 320px;" />
+</label>
+<label style="margin-left:12px;">
+  <input type="checkbox" id="headed" />
+  Ejecutar en headed (mostrar navegador)
+</label>
+
+<div class="row" style="margin-top:12px;">
+  <button id="run">▶ Ejecutar pruebas</button>
+  <a id="open" href="/report/" target="_blank" style="display:none">Abrir reporte</a>
+  <a id="download" href="/download-report">Descargar reporte</a>
+</div>
+
+<h3>Logs</h3>
+<pre id="logs">—</pre>
+
+<script>
+  const runBtn = document.getElementById('run');
+  const openLink = document.getElementById('open');
+  const logsPre = document.getElementById('logs');
+  const specInput = document.getElementById('spec');
+  const headedCb = document.getElementById('headed');
+
+  runBtn.onclick = async () => {
+    logsPre.textContent = 'Ejecutando...';
+    openLink.style.display = 'none';
+
+    const res = await fetch('/run-tests', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        spec: specInput.value || 'tests/avianca.spec.ts',
+        headless: !headedCb.checked
+      })
+    });
+
+    const data = await res.json();
+    logsPre.textContent = (data.logs || '') + '\n' + (data.errors || '');
+
+    if (data.reportReady) {
+      openLink.style.display = 'inline-block';
+    }
+  };
+</script>

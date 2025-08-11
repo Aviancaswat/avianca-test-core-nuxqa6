@@ -14,13 +14,6 @@ const tests: TGenericCopys[] = [
         homeCiudadOrigen: "BAQ",
         homeCiudadDestino: "BOG",
         targetPage: "home"
-    },
-    {
-        id: "despuesOtroUnicoId",
-        description: "ruta de bogotá a barranquilla",
-        homeCiudadOrigen: "wxy",
-        homeCiudadDestino: "BOG",
-        targetPage: "booking"
     }
 ]
 
