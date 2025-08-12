@@ -36,22 +36,22 @@ jobs:
           path: results-by-test/
           retention-days: 30
 
-  notification:
-    needs: test
-    if: failure()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Notificar a Slack si fallan las pruebas
-        run: |
-          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
-          WORKFLOW_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+  # notification:
+  #   needs: test
+  #   if: failure()
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Notificar a Slack si fallan las pruebas
+  #       run: |
+  #         BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+  #         WORKFLOW_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
 
-          MESSAGE="❌ Las pruebas Playwright fallaron
-          📌 Rama: *$BRANCH_NAME*
-          🧑 Autor: $GITHUB_ACTOR
-          🔗 Ver ejecución: <$WORKFLOW_URL|Abrir en GitHub Actions>"
+  #         MESSAGE="❌ Las pruebas Playwright fallaron
+  #         📌 Rama: *$BRANCH_NAME*
+  #         🧑 Autor: $GITHUB_ACTOR
+  #         🔗 Ver ejecución: <$WORKFLOW_URL|Abrir en GitHub Actions>"
 
-          # Enviamos el mensaje a Slack
-          curl -X POST -H 'Content-type: application/json' \
-            --data "{\"text\":\"$MESSAGE\"}" \
-            ${{ secrets.SLACK_WEBHOOK_URL }}
+  #         # Enviamos el mensaje a Slack
+  #         curl -X POST -H 'Content-type: application/json' \
+  #           --data "{\"text\":\"$MESSAGE\"}" \
+  #           ${{ secrets.SLACK_WEBHOOK_URL }}
