@@ -20,6 +20,10 @@ const PlaywrightHelper = {
         SCREENSHOTS_DETAILS = [];
     },
 
+    async wait(ms: number): Promise<void> {
+        return new Promise<void>(resolve => setTimeout(resolve, ms));
+    },
+
     getTimestamp(): string {
         const now = new Date();
         const pad = (n: number) => n.toString().padStart(2, '0');
@@ -35,6 +39,7 @@ const PlaywrightHelper = {
     getCodeContentJS(): string {
 
         const code = `
+            console.log("Código insertado con javascript");
             import { SCREENSHOTS_DETAILS } from "./helpers/avianca.helper";
 
             console.log("SCREENSHOTS_DETAILS: ", SCREENSHOTS_DETAILS);
@@ -113,6 +118,7 @@ const PlaywrightHelper = {
                 </script>
             `;
             const nuevoHtml = data.replace('</head>', `${nuevoCodigoJs}</head>`);
+            console.log("nuevoHtml: ", nuevoHtml);
             await fs.writeFile(reportePath, nuevoHtml, 'utf8');
             console.log('Archivo HTML modificado exitosamente');
         } catch (err) {

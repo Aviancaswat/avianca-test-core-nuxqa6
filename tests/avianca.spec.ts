@@ -59,7 +59,7 @@ data.forEach(itemTest => {
       try {
 
         console.log("Esperando a actualizar el reporte");
-        await helper.updateFileReport();
+        await helper.mainReportFileUpdate();
       }
       catch (error) {
         console.log("Ocurrio un error al actualizar el reporte: ", error);
