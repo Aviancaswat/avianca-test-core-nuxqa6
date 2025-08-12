@@ -1,8 +1,10 @@
 import type { Page, TestInfo } from "@playwright/test";
+import fs from "fs";
 import path from "path";
 import { genericCopys } from "../data/copys";
 import { HomeCopy as copys } from "../data/copys/home/home.copy";
 import type { Lang } from "../types/copy.type";
+import { Utilities } from "../utils/utilities";
 
 type Tpage = Page | undefined | any;
 
@@ -29,7 +31,7 @@ const PlaywrightHelper = {
         return `${dd}_${mm}_${yyyy}-${hh}_${mi}_${ss}`;
     },
 
-    async takeScreenshot(label: string): Promise<void> {
+    async takeScreenshot(label: string, descriptionTextImage: string | undefined = "Imagen sin descripción"): Promise<void> {
 
         if (!page) {
             throw new Error("El navegador no ha sido inicializado. Llama al método 'initializeBrowser'");
@@ -43,14 +45,13 @@ const PlaywrightHelper = {
             const filename = `step${screenshotCounter++}-${label}-${timestamp}.png`
             const fullNameFolder = `${idTest}-${foldername}`
             const pathScreenshot = path.join(__dirname, '..', 'results-by-test', fullNameFolder, filename);
+            await page.screenshot({ path: pathScreenshot });
+            await Utilities.addTextToImage(pathScreenshot, descriptionTextImage);
 
             testInfo.attach(filename, {
-                body: await page.screenshot({
-                    path: pathScreenshot
-                }),
+                body: fs.readFileSync(pathScreenshot),
                 contentType: "image/png",
             });
-
         } catch (error) {
             console.error("Ocurrió un error al tomar el screenshot con nombre ", label);
             throw error;

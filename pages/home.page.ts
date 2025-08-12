@@ -44,12 +44,12 @@ const HomePage: THomePage = {
 
             const modalPassenger = await page.locator("#paxControlSearchId").isVisible();
 
-            if (modalPassenger) { // Si el modal de pasajeros esta abierto.
+            if (modalPassenger) {
                 for (let i = 0; i < copys.homePassengerAdults!; i++) {
                     await page.getByRole('button', { name: '' }).nth(0).click();
                 }
             }
-            else { // si el modal de pasajeros esta cerrado.
+            else {
                 await page.locator('[aria-label="Pasajeros :1"]').click();
                 await page.waitForTimeout(1000);
                 for (let i = 0; i < copys.homePassengerAdults!; i++) {
@@ -57,7 +57,10 @@ const HomePage: THomePage = {
                 }
             }
 
-            await helper.takeScreenshot("seleccion-pasajeros-adultos");
+            const descriptionScreenshot = `
+                Evidecia flujo HOME | seleccion de pasajeros adultos
+                Total adultos seleccionados: ${copys.homePassengerAdults}`;
+            await helper.takeScreenshot("seleccion-pasajeros-adultos", descriptionScreenshot);
         }
         catch (error) {
             throw new Error(`HOMEPAGE => Ha ocurrido un error al seleccionar los pasajeros de adultos | Error: ${error}`);
@@ -91,7 +94,10 @@ const HomePage: THomePage = {
                 }
             }
 
-            await helper.takeScreenshot("seleccion-pasajeros-jovenes");
+            const descriptionScreenshot = `
+                Evidecia Flujos HOME | seleccion de pasajeros jóvenes
+                Total jóvenes seleccionado: ${copys.homePassengerYouths}`;
+            await helper.takeScreenshot("seleccion-pasajeros-jovenes", descriptionScreenshot);
         }
         catch (error) {
             throw new Error(`HOMEPAGE => Ha ocurrido un error al seleccionar los pasajeros de adultos | Error: ${error}`);
@@ -125,7 +131,11 @@ const HomePage: THomePage = {
                 }
             }
 
-            await helper.takeScreenshot("seleccion-pasajeros-niños");
+            const descriptionScreenshot = `
+                Evidencia flujo Home | selección de pasajeros niños 
+                Total de niños seleccionados: ${copys.homePassengerChildren}
+                `
+            await helper.takeScreenshot("seleccion-pasajeros-niños", descriptionScreenshot);
         }
         catch (error) {
             throw new Error(`HOMEPAGE => Ha ocurrido un error al seleccionar los pasajeros de adultos | Error: ${error}`);
@@ -160,7 +170,11 @@ const HomePage: THomePage = {
                 }
             }
 
-            await helper.takeScreenshot("seleccion-pasajeros-infantes");
+            const descriptionScreenshot = `
+                Evidencia flujo Home | selección de pasajeros infantes 
+                Total de infantes seleccionados: ${copys.homePassengerInfant}
+                `
+            await helper.takeScreenshot("seleccion-pasajeros-infantes", descriptionScreenshot);
         }
         catch (error) {
             throw new Error(`HOMEPAGE => Ha ocurrido un error al seleccionar los pasajeros de adultos | Error: ${error}`);
@@ -185,18 +199,23 @@ const HomePage: THomePage = {
         }
 
         await page.waitForSelector("#searchComponentDiv");
+        let isTypeFlight = copys.homeisActiveOptionOutbound;
 
-        if (copys.homeisActiveOptionOutbound) { //si esta seleccionado el vuelo de ida
+        if (isTypeFlight) { //si esta seleccionado el vuelo de ida
             const checkIda = page.locator("#journeytypeId_1");
             await checkIda.click({ delay: helper.getRandomDelay() });
-            await helper.takeScreenshot("check-vuelo-ida");
         }
         else {
             const checkIdaVuelta = page.locator("#journeytypeId_0");
             await checkIdaVuelta.click({ delay: helper.getRandomDelay() });
-            await helper.takeScreenshot("check-vuelo-ida-vuelta");
         }
 
+        const descriptionScreenshot = `
+           Evidencia flujo Home | selección de tipo de vuelo 
+           tipo de vuelo seleccionado: ${isTypeFlight ? "Solo ida" : "Ida y Vuelta"}
+           `
+        const messageScreenshot = isTypeFlight ? "check-vuelo-solo-ida" : "check-vuelo-ida-vuelta";
+        await helper.takeScreenshot(messageScreenshot, descriptionScreenshot);
         await page.waitForTimeout(2000);
     },
 
@@ -241,7 +260,12 @@ const HomePage: THomePage = {
             await origen.press('Enter');
             await page.waitForTimeout(1500);
             await (page.locator('id=' + copys.homeCiudadOrigen)).click({ delay: helper.getRandomDelay() })
-            await helper.takeScreenshot('ciudad-origen');
+
+            const descriptionScreenShot = `
+                Evidencia flujo Home | selección de ciudad de origen 
+                Ciudad origen seleccionada: ${copys.homeCiudadOrigen}
+            `
+            await helper.takeScreenshot('ciudad-origen', descriptionScreenShot);
             await page.waitForTimeout(2000);
         }
         catch (error) {
@@ -265,7 +289,12 @@ const HomePage: THomePage = {
             await destino.fill(copys.homeCiudadDestino, { delay: helper.getRandomDelay() });
             await destino.press('Enter');
             await (page.locator('id=' + copys.homeCiudadDestino)).click({ delay: helper.getRandomDelay() });
-            await helper.takeScreenshot('04-ciudad-destino');
+
+            const descriptionScreenShot = `
+                Evidencia flujo Home | selección de ciudad de destino 
+                Ciudad destino seleccionada: ${copys.homeCiudadDestino}
+            `
+            await helper.takeScreenshot('04-ciudad-destino', descriptionScreenShot);
         }
         catch (error) {
             console.error("Home => Ocurrió un error al selecionar la ciudad de destino ", error);
@@ -285,7 +314,11 @@ const HomePage: THomePage = {
             const fechaIda = await page.locator('id=departureInputDatePickerId');
             await fechaIda.click({ delay: helper.getRandomDelay() });
             await page.locator('span').filter({ hasText: copys.homeFechaSalida }).click({ delay: helper.getRandomDelay() });
-            await helper.takeScreenshot('seleccion-fecha-ida');
+            const descriptionScreenShot = `
+                Evidencia flujo Home | selección de fecha de salida 
+                Fecha de salidad seleccionada: ${copys.homeFechaSalida}
+            `
+            await helper.takeScreenshot('seleccion-fecha-ida', descriptionScreenShot);
         }
         catch (error) {
             console.error("Home => Ocurrió un error al seleccionar la fecha de ida, Error: ", error)
@@ -305,7 +338,11 @@ const HomePage: THomePage = {
 
                 await page.waitForTimeout(3000);
                 await page.locator('span').filter({ hasText: copys.homeFechaLLegada }).click({ delay: helper.getRandomDelay() });
-                await helper.takeScreenshot('seleccion-fecha-vuelta');
+                const descriptionScreenShot = `
+                    Evidencia flujo Home | selección de fecha de llegada 
+                    Fecha de llegada seleccionada: ${copys.homeFechaLLegada}
+                `
+                await helper.takeScreenshot('seleccion-fecha-vuelta', descriptionScreenShot);
             }
             catch (error) {
                 console.error("Home => Ocurrió un error al seleccionar la fecha de regreso, Error: ", error);
@@ -348,7 +385,12 @@ const HomePage: THomePage = {
 
             const confirmar = await page.locator('div#paxControlSearchId > div > div:nth-of-type(2) > div > div > button')
             confirmar.click({ delay: helper.getRandomDelay() });
-            await helper.takeScreenshot('seleccion-pasajeros');
+            const totalPassengers = (copys.homePassengerAdults! + 1) + copys.homePassengerYouths! + copys.homePassengerChildren! + copys.homePassengerInfant!;
+            const descriptionScreenShot = `
+                Evidencia flujo Home | selección de pasajeros 
+                total pasajeros seleccionados: ${totalPassengers}
+            `
+            await helper.takeScreenshot('seleccion-pasajeros', descriptionScreenShot);
         }
         catch (error) {
             console.error("Home => Ocurrió un error al seleccionar los pasajeros, Error: ", error);
@@ -367,7 +409,12 @@ const HomePage: THomePage = {
             const lang = helper.getLang();
             await expect(page.getByRole('button', { name: copys.home![lang]?.homeBuscar, exact: true })).toBeVisible();
             await page.getByRole('button', { name: copys.home![lang]?.homeBuscar, exact: true }).click({ delay: helper.getRandomDelay() });
-            await helper.takeScreenshot('busqueda-vuelos');
+            
+            const descriptionScreenShot = `
+                Evidencia flujo Home | búsqueda de vuelos 
+                Ciudades seleccionadas: ${copys.homeCiudadOrigen} - ${copys.homeCiudadDestino}
+            `
+            await helper.takeScreenshot('busqueda-vuelos', descriptionScreenShot);
             await page.waitForSelector('#pageWrap');
         }
         catch (error) {

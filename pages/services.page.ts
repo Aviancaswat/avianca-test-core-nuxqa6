@@ -1,7 +1,7 @@
 import { expect, type Page } from "@playwright/test";
+import { copyServices } from "../data/copys/services/services.copy";
 import { GLOBAL_MESSAGES as m } from "../global.variables";
 import { PlaywrightHelper as helper } from "../helpers/avianca.helper";
-import { copyServices } from "../data/copys/services/services.copy";
 
 type TPage = Page | undefined | any;
 
@@ -206,3 +206,4 @@ const ServicesPage: TServicesPage = {
 };
 
 export { ServicesPage };
+
