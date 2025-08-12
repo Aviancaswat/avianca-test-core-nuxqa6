@@ -13,7 +13,14 @@ const tests: TGenericCopys[] = [
         description: "ruta de barranquilla a bogotá",
         homeCiudadOrigen: "BOG",
         homeCiudadDestino: "BAQ",
-        targetPage: "passenger",
+        targetPage: "home",
+    },
+    {
+        id: "OTRO ID PRUEBA - selección de tarifa economy | Bogotá a barranquilla | agosto 28 a agosto 29 | solo ida",
+        description: "ruta de barranquilla a bogotá",
+        homeCiudadOrigen: "BOG",
+        homeCiudadDestino: "AAA",
+        targetPage: "home",
     }
 ]
 
