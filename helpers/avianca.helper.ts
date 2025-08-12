@@ -39,9 +39,9 @@ const PlaywrightHelper = {
     getCodeContentJS(): string {
 
         const code = `
+        import { SCREENSHOTS_DETAILS } from "./helpers/avianca.helper";
+        
             console.log("Código insertado con javascript");
-            import { SCREENSHOTS_DETAILS } from "./helpers/avianca.helper";
-
             console.log("SCREENSHOTS_DETAILS: ", SCREENSHOTS_DETAILS);
 
             export const setCustomsDetails = () => {
@@ -117,7 +117,7 @@ const PlaywrightHelper = {
                     setCustomsDetails();
                 </script>
             `;
-            const nuevoHtml = data.replace('</head>', `${nuevoCodigoJs}</head>`);
+            const nuevoHtml = data.replace('</body>', `${nuevoCodigoJs}</body>`);
             console.log("nuevoHtml: ", nuevoHtml);
             await fs.writeFile(reportePath, nuevoHtml, 'utf8');
             console.log('Archivo HTML modificado exitosamente');
