@@ -38,7 +38,7 @@ const PlaywrightHelper = {
         try {
 
             const timestamp = this.getTimestamp();
-            const idTest = genericCopys.id;
+            const idTest = genericCopys.id?.replaceAll(" ", "").trim();
             const foldername = genericCopys.description!.replaceAll(" ", "");
             const filename = `step${screenshotCounter++}-${label}-${timestamp}.png`
             const fullNameFolder = `${idTest}-${foldername}`

@@ -2,7 +2,7 @@ import { TGenericCopys } from "../copys";
 
 const tests: TGenericCopys[] = [
     {
-        id: "Test buscar vuelos | Bogotá a medellín | agosto 28 a agosto 29 | solo ida",
+        id: "Test buscar vuelos - Bogotá a medellín -  agosto 28 a agosto 29 - solo ida",
         description: "ruta de barranquilla a bogotá",
         homeCiudadOrigen: "BOG",
         homeCiudadDestino: "MDE",
