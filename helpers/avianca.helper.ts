@@ -32,24 +32,105 @@ const PlaywrightHelper = {
         return `${dd}_${mm}_${yyyy}-${hh}_${mi}_${ss}`;
     },
 
+    getCodeContentJS(): string {
+
+        const code = `
+            import { SCREENSHOTS_DETAILS } from "./helpers/avianca.helper";
+
+            console.log("SCREENSHOTS_DETAILS: ", SCREENSHOTS_DETAILS);
+
+            export const setCustomsDetails = () => {
+                setTimeout(() => {
+
+                    const screenShots = document.querySelectorAll("img.screenshot");
+
+                    screenShots.forEach((screen, index) => {
+
+                        const containerDetails = document.createElement("div");
+                        containerDetails.className = "screeshot-details";
+
+                        const titleDetailsHTML = document.createElement("strong");
+                        titleDetailsHTML.className = "screenshot-title";
+                        titleDetailsHTML.innerText = "Detalles del screeshot";
+                        
+                        // Aquí se corrige el template string para interpolar el valor de index
+                        const titleHTML = document.createElement("strong");
+                        titleHTML.innerHTML = \`Paso \${index}: \`;
+
+                        const descriptionHTML = document.createElement("strong");
+                        descriptionHTML.innerHTML = \`Detalles: \`;
+
+                        const titleText = document.createElement("span");
+                        titleText.innerHTML = SCREENSHOTS_DETAILS[index];
+                        const descriptionText = document.createElement("span");
+                        descriptionText.innerHTML = SCREENSHOTS_DETAILS[index];
+
+                        containerDetails.appendChild(titleDetailsHTML);
+                        containerDetails.appendChild(document.createElement("br"));
+                        containerDetails.appendChild(titleHTML);
+                        containerDetails.appendChild(titleText);
+                        containerDetails.appendChild(document.createElement("br"));
+                        containerDetails.appendChild(descriptionHTML);
+                        containerDetails.appendChild(descriptionText);
+
+                        screen.parentElement.parentElement.append(containerDetails);
+                    })
+                }, 3000);
+            }
+        `;
+        return code;
+    },
+
+    async createFileContentJS() {
+
+        const filenameJS = 'custom-details.js';
+        const filePath = path.join(__dirname, '..', 'playwright-report', filenameJS);
+
+        try {
+
+            const code = this.getCodeContentJS();
+            await fs.writeFile(filePath, code);
+            console.log("Archivo creado correctamente. Ruta: ", filePath);
+        }
+        catch (error) {
+            console.error(`Ha ocurrido un error al crear el archivo ${filenameJS} | Error: ${error}`);
+            throw error;
+        }
+    },
+
     async updateFileReport() {
         const reportePath = path.join(__dirname, '..', 'playwright-report', 'index.html');
         console.log('Ruta al archivo HTML:', reportePath);
 
         try {
+
             await fs.access(reportePath, fs.constants.F_OK);
             const data = await fs.readFile(reportePath, 'utf8');
             const nuevoCodigoJs = `
-            <script>
-                console.log("Este es un código JS añadido dinámicamente.");
-                alert("¡Prueba exitosa!");
-            </script>
-        `;
-            const nuevoHtml = data.replace('</body>', `${nuevoCodigoJs}</body>`);
+                <script type="module">
+                    import { setCustomsDetails } from "./custom-details.js";
+                    setCustomsDetails();
+                </script>
+            `;
+            const nuevoHtml = data.replace('</head>', `${nuevoCodigoJs}</head>`);
             await fs.writeFile(reportePath, nuevoHtml, 'utf8');
             console.log('Archivo HTML modificado exitosamente');
         } catch (err) {
             console.error('Error al intentar modificar el reporte:', err);
+        }
+    },
+
+    mainReportFileUpdate(): void {
+
+        try {
+
+            this.createFileContentJS();
+            this.updateFileReport();
+
+        }
+        catch (error) {
+            console.error("Ocurrión un error el en proceso de creación o de actualización de archivo: ", error);
+            throw error;
         }
     },
 
