@@ -31,6 +31,11 @@ const PlaywrightHelper = {
         return `${dd}_${mm}_${yyyy}-${hh}_${mi}_${ss}`;
     },
 
+    normalizeFilename(filename: string) {
+        const sanitized = filename.replace(/[|\\/:*?"<>]/g, '-');
+        return sanitized.normalize("NFD").replace(/[\u0300-\u036f]/g, '');
+    },
+
     async takeScreenshot(label: string, descriptionTextImage: string | undefined = "Imagen sin descripción"): Promise<void> {
 
         if (!page) {
@@ -41,8 +46,8 @@ const PlaywrightHelper = {
 
             const timestamp = this.getTimestamp();
             const idTest = genericCopys.id?.replaceAll(" ", "").trim();
-            const foldername = genericCopys.description!.replaceAll(" ", "");
-            const filename = `step${screenshotCounter++}-${label}-${timestamp}.png`
+            const foldername = this.normalizeFilename(genericCopys.description!.replaceAll(" ", ""));
+            const filename = this.normalizeFilename(`step${screenshotCounter++}-${label}-${timestamp}.png`);
             const fullNameFolder = `${idTest}-${foldername}`
             const pathScreenshot = path.join(__dirname, '..', 'results-by-test', fullNameFolder, filename);
             await page.screenshot({ path: pathScreenshot });

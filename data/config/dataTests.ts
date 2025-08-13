@@ -2,25 +2,11 @@ import { TGenericCopys } from "../copys";
 
 const tests: TGenericCopys[] = [
     {
-        id: "ID PRUEBA - Test bogotá a medellín - ida y vuelta - agosto 28 a agosto 29",
+        id: "ID PRUEBA - test de bogota a medellin del ago 29 a ago 30",
         description: "ruta de barranquilla a bogotá",
         homeCiudadOrigen: "BOG",
         homeCiudadDestino: "MDE",
         targetPage: "home"
-    },
-    {
-        id: "OTRO ID PRUEBA - selección de tarifa economy | Bogotá a barranquilla | agosto 28 a agosto 29 | solo ida",
-        description: "ruta de barranquilla a bogotá",
-        homeCiudadOrigen: "BOG",
-        homeCiudadDestino: "BAQ",
-        targetPage: "home",
-    },
-    {
-        id: "OTRO ID PRUEBA - selección de tarifa economy | Bogotá a barranquilla | agosto 28 a agosto 29 | solo ida",
-        description: "ruta de barranquilla a bogotá",
-        homeCiudadOrigen: "BOG",
-        homeCiudadDestino: "AAA",
-        targetPage: "home",
     }
 ]
 
