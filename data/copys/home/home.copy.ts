@@ -26,7 +26,6 @@ export interface IHomeCopy {
     homePassengerYouths: number;
     homePassengerChildren: number;
     homePassengerInfant: number;
-    getLang: () => Lang;
 }
 
 const HomeCopy: IHomeCopy = {
@@ -66,10 +65,9 @@ const HomeCopy: IHomeCopy = {
             homePagar: ' Continuer',
         }
     },
-    getLang: () => HomeCopy.homeIdioma,
     homeisActiveOptionOutbound: false,
-    homePassengerAdults: 2,
-    homePassengerYouths: 1,
+    homePassengerAdults: 0,
+    homePassengerYouths: 0,
     homePassengerChildren: 0,
     homePassengerInfant: 0
 }

@@ -58,8 +58,9 @@ const HomePage: THomePage = {
             }
 
             const descriptionScreenshot = `
-                Evidecia flujo HOME | seleccion de pasajeros adultos
+                HOME | seleccion de pasajeros adultos
                 Total adultos seleccionados: ${copys.homePassengerAdults}`;
+
             await helper.takeScreenshot("seleccion-pasajeros-adultos", descriptionScreenshot);
         }
         catch (error) {
@@ -95,7 +96,7 @@ const HomePage: THomePage = {
             }
 
             const descriptionScreenshot = `
-                Evidecia Flujos HOME | seleccion de pasajeros jóvenes
+                HOME | seleccion de pasajeros jóvenes
                 Total jóvenes seleccionado: ${copys.homePassengerYouths}`;
             await helper.takeScreenshot("seleccion-pasajeros-jovenes", descriptionScreenshot);
         }
@@ -132,7 +133,7 @@ const HomePage: THomePage = {
             }
 
             const descriptionScreenshot = `
-                Evidencia flujo Home | selección de pasajeros niños 
+                Home | selección de pasajeros niños 
                 Total de niños seleccionados: ${copys.homePassengerChildren}
                 `
             await helper.takeScreenshot("seleccion-pasajeros-niños", descriptionScreenshot);
@@ -171,7 +172,7 @@ const HomePage: THomePage = {
             }
 
             const descriptionScreenshot = `
-                Evidencia flujo Home | selección de pasajeros infantes 
+                Home | selección de pasajeros infantes 
                 Total de infantes seleccionados: ${copys.homePassengerInfant}
                 `
             await helper.takeScreenshot("seleccion-pasajeros-infantes", descriptionScreenshot);
@@ -211,7 +212,7 @@ const HomePage: THomePage = {
         }
 
         const descriptionScreenshot = `
-           Evidencia flujo Home | selección de tipo de vuelo 
+            Home | selección de tipo de vuelo 
            tipo de vuelo seleccionado: ${isTypeFlight ? "Solo ida" : "Ida y Vuelta"}
            `
         const messageScreenshot = isTypeFlight ? "check-vuelo-solo-ida" : "check-vuelo-ida-vuelta";
@@ -262,7 +263,7 @@ const HomePage: THomePage = {
             await (page.locator('id=' + copys.homeCiudadOrigen)).click({ delay: helper.getRandomDelay() })
 
             const descriptionScreenShot = `
-                Evidencia flujo Home | selección de ciudad de origen 
+                Home | selección de ciudad de origen 
                 Ciudad origen seleccionada: ${copys.homeCiudadOrigen}
             `
             await helper.takeScreenshot('ciudad-origen', descriptionScreenShot);
@@ -291,7 +292,7 @@ const HomePage: THomePage = {
             await (page.locator('id=' + copys.homeCiudadDestino)).click({ delay: helper.getRandomDelay() });
 
             const descriptionScreenShot = `
-                Evidencia flujo Home | selección de ciudad de destino 
+                Home | selección de ciudad de destino 
                 Ciudad destino seleccionada: ${copys.homeCiudadDestino}
             `
             await helper.takeScreenshot('04-ciudad-destino', descriptionScreenShot);
@@ -315,7 +316,7 @@ const HomePage: THomePage = {
             await fechaIda.click({ delay: helper.getRandomDelay() });
             await page.locator('span').filter({ hasText: copys.homeFechaSalida }).click({ delay: helper.getRandomDelay() });
             const descriptionScreenShot = `
-                Evidencia flujo Home | selección de fecha de salida 
+                Home | selección de fecha de salida 
                 Fecha de salidad seleccionada: ${copys.homeFechaSalida}
             `
             await helper.takeScreenshot('seleccion-fecha-ida', descriptionScreenShot);
@@ -339,7 +340,7 @@ const HomePage: THomePage = {
                 await page.waitForTimeout(3000);
                 await page.locator('span').filter({ hasText: copys.homeFechaLLegada }).click({ delay: helper.getRandomDelay() });
                 const descriptionScreenShot = `
-                    Evidencia flujo Home | selección de fecha de llegada 
+                    Home | selección de fecha de llegada 
                     Fecha de llegada seleccionada: ${copys.homeFechaLLegada}
                 `
                 await helper.takeScreenshot('seleccion-fecha-vuelta', descriptionScreenShot);
@@ -387,7 +388,7 @@ const HomePage: THomePage = {
             confirmar.click({ delay: helper.getRandomDelay() });
             const totalPassengers = (copys.homePassengerAdults! + 1) + copys.homePassengerYouths! + copys.homePassengerChildren! + copys.homePassengerInfant!;
             const descriptionScreenShot = `
-                Evidencia flujo Home | selección de pasajeros 
+                Home | selección de pasajeros 
                 total pasajeros seleccionados: ${totalPassengers}
             `
             await helper.takeScreenshot('seleccion-pasajeros', descriptionScreenShot);
@@ -411,7 +412,7 @@ const HomePage: THomePage = {
             await page.getByRole('button', { name: copys.home![lang]?.homeBuscar, exact: true }).click({ delay: helper.getRandomDelay() });
             
             const descriptionScreenShot = `
-                Evidencia flujo Home | búsqueda de vuelos 
+                Home | búsqueda de vuelos 
                 Ciudades seleccionadas: ${copys.homeCiudadOrigen} - ${copys.homeCiudadDestino}
             `
             await helper.takeScreenshot('busqueda-vuelos', descriptionScreenShot);

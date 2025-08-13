@@ -26,7 +26,7 @@ const Utilities = {
         return lines;
     },
     getTextWidth(text, fontSize) {
-        const characterWidth = fontSize * 0.3;
+        const characterWidth = fontSize * 0.4;
         return text.length * characterWidth;
     },
     async addTextToImage(imagePath: any, text: string) {

@@ -2,8 +2,7 @@ import type { Page, TestInfo } from "@playwright/test";
 import fs from "fs";
 import path from "path";
 import { genericCopys } from "../data/copys";
-import { HomeCopy as copys } from "../data/copys/home/home.copy";
-import type { Lang } from "../types/copy.type";
+import type { Lang, Position } from "../types/copy.type";
 import { Utilities } from "../utils/utilities";
 
 type Tpage = Page | undefined | any;
@@ -44,6 +43,7 @@ const PlaywrightHelper = {
 
         try {
 
+            const descriptionFullScreenshot = this.getMessageDetailsDefault() + "-" + descriptionTextImage;
             const timestamp = this.getTimestamp();
             const idTest = this.normalizeFilename(genericCopys.id?.replaceAll(" ", "").trim());
             const foldername = this.normalizeFilename(genericCopys.description!.replaceAll(" ", ""));
@@ -51,22 +51,30 @@ const PlaywrightHelper = {
             const fullNameFolder = `${idTest}-${foldername}`
             const pathScreenshot = path.join(__dirname, '..', 'results-by-test', fullNameFolder, filename);
             await page.screenshot({ path: pathScreenshot });
-            await Utilities.addTextToImage(pathScreenshot, descriptionTextImage);
+            await Utilities.addTextToImage(pathScreenshot, descriptionFullScreenshot);
 
             testInfo.attach(filename, {
                 body: fs.readFileSync(pathScreenshot),
                 contentType: "image/png",
             });
+
         } catch (error) {
             console.error("Ocurrió un error al tomar el screenshot con nombre ", label);
             throw error;
         }
     },
     getLang(): Lang {
-        return copys.getLang();
+        return genericCopys.language ?? "es";
     },
     getRandomDelay(): number {
         return Math.random() * (200 - 50) + 50;
+    },
+    getPosition(): Position {
+        return genericCopys.position ?? "CO"
+    },
+    getMessageDetailsDefault(): string {
+        const messageDefault = `${genericCopys.id}-${genericCopys.description}-${this.getLang()}-${this.getPosition()}`;
+        return messageDefault;
     }
 }
 

@@ -1,5 +1,27 @@
 type Lang = 'es' | 'en' | 'pt' | 'fr';
 
+type Position = 
+  | "AR" // Argentina
+  | "BR" // Brasil
+  | "CO" // Colombia
+  | "ES" // España
+  | "MX" // México
+  | "US" // Estados Unidos
+  | "CA" // Canadá
+  | "FR" // Francia
+  | "IT" // Italia
+  | "DE" // Alemania
+  | "GB" // Reino Unido
+  | "PT" // Portugal
+  | "CL" // Chile
+  | "PE" // Perú
+  | "VE" // Venezuela
+  | "JP" // Japón
+  | "KR" // Corea del Sur
+  | "AU" // Australia
+  | "IN" // India
+  | "RU"; // Rusia
+
 type copysType = {
     idioma: Lang,
     pais: string,
@@ -38,4 +60,5 @@ type copysType = {
     getLang: () => Lang
 }
 
-export type { copysType, Lang };
+export type { copysType, Lang, Position };
+
