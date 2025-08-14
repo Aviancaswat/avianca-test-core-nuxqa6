@@ -1,14 +1,18 @@
+name: Slack Trigger Test
+
 on:
   workflow_dispatch:
     inputs:
       mensaje:
-        description: "Texto a enviar a Slack"
+        description: "Texto que recibo desde Postman"
         required: true
         default: "Sin mensaje"
 
 jobs:
-  notificar:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Ver mensaje
-        run: echo "Mensaje: ${{ github.event.inputs.mensaje }}"
+      - name: Mostrar mensaje
+        run: 'echo "Mensaje recibido: ${{ github.event.inputs.mensaje }}"'
+
+
