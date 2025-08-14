@@ -26,4 +26,4 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright
-        run: npx playwright test --grep "${{ github.event.inputs.test || github.event.client_payload.test }}"
+        run: npx playwright test
