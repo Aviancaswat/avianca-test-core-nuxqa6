@@ -9,6 +9,8 @@ on:
         default: '.*'
   repository_dispatch:
     types: [run-playwright]
+  push:
+    branches: [ 'feat/ImplementacionSlack' ]
 
 jobs:
   test:
