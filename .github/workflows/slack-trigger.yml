@@ -1,13 +1,14 @@
 on:
-  repository_dispatch:
-    types: [run-playwright]
+  workflow_dispatch:
+    inputs:
+      mensaje:
+        description: "Texto a enviar a Slack"
+        required: true
+        default: "Sin mensaje"
 
 jobs:
-  test:
-    if: github.ref == 'refs/heads/feat/ImplementacionSlack'
+  notificar:
     runs-on: ubuntu-latest
     steps:
-      - name: Mostrar evento y rama
-        run: |
-          echo "Evento: ${{ github.event_name }}"
-          echo "Rama: ${{ github.ref }}"
+      - name: Ver mensaje
+        run: echo "Mensaje: ${{ github.event.inputs.mensaje }}"
