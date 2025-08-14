@@ -1,14 +1,15 @@
-name: Prueba Simple
+name: Test Workflow
 
 on:
-  workflow_dispatch: 
-  push:
-    branches:
-      - feat/ImplementacionSlack
+  workflow_dispatch:
+  repository_dispatch:
+    types: [run-playwright] 
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Mostrar mensaje
-        run: echo "✅ Workflow ejecutado en la rama ${{ github.ref_name }}"
+      - name: Mostrar evento recibido
+        run: |
+          echo "Evento: ${{ github.event_name }}"
+          echo "Payload: ${{ toJson(github.event) }}"
