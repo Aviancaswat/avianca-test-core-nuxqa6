@@ -1,12 +1,19 @@
 name: Run Playwright from Slack
 
 on:
+  workflow_dispatch: 
+    inputs:
+      test:
+        description: 'Nombre del test a ejecutar'
+        required: true
+        default: '.*'
   repository_dispatch:
     types: [run-playwright]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/feat/ImplementacionSlack' 
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -17,4 +24,4 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright
-        run: npx playwright test --grep "${{ github.event.client_payload.test }}"
+        run: npx playwright test --grep "${{ github.event.inputs.test || github.event.client_payload.test }}"
