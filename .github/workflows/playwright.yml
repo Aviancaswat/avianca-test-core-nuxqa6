@@ -1,57 +1,70 @@
-name: Playwright Tests
+# name: Playwright Tests
+
+# on:
+#   push:
+#     branches: [ 'develop' ]
+#   pull_request:
+#     branches: [ 'develop' ]
+
+# jobs:
+#   test:
+#     timeout-minutes: 60
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#       - uses: actions/setup-node@v4
+#         with:
+#           node-version: lts/*
+#       - name: Install dependencies
+#         run: npm ci
+#       - name: Install Playwright Browsers
+#         run: npx playwright install --with-deps
+#       - name: Run Playwright tests
+#         run: npx playwright test
+#       - name: Upload Playwright Report
+#         uses: actions/upload-artifact@v4
+#         if: ${{ !cancelled() }}
+#         with:
+#           name: playwright-report
+#           path: playwright-report/
+#           retention-days: 30
+#       - name: Resultados separado por tests
+#         uses: actions/upload-artifact@v4
+#         if: ${{ !cancelled() }}
+#         with:
+#           name: results-by-test
+#           path: results-by-test/
+#           retention-days: 30
+
+#   notification:
+#     needs: test
+#     if: failure()
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Notificar a Slack si fallan las pruebas
+#         run: |
+#           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+#           WORKFLOW_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+
+#           MESSAGE="❌ Las pruebas Playwright fallaron
+#           📌 Rama: *$BRANCH_NAME*
+#           🧑 Autor: $GITHUB_ACTOR
+#           🔗 Ver ejecución: <$WORKFLOW_URL|Abrir en GitHub Actions>"
+
+#           # Enviamos el mensaje a Slack
+#           curl -X POST -H 'Content-type: application/json' \
+#             --data "{\"text\":\"$MESSAGE\"}" \
+#             ${{ secrets.SLACK_WEBHOOK_URL }}
+
+
+name: Test Workflow
 
 on:
-  push:
-    branches: [ 'develop' ]
-  pull_request:
-    branches: [ 'develop' ]
+  workflow_dispatch: # Permite ejecutarlo manualmente desde GitHub
 
 jobs:
   test:
-    timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-      - name: Install dependencies
-        run: npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Run Playwright tests
-        run: npx playwright test
-      - name: Upload Playwright Report
-        uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
-      - name: Resultados separado por tests
-        uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: results-by-test
-          path: results-by-test/
-          retention-days: 30
-
-  notification:
-    needs: test
-    if: failure()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Notificar a Slack si fallan las pruebas
-        run: |
-          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
-          WORKFLOW_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-
-          MESSAGE="❌ Las pruebas Playwright fallaron
-          📌 Rama: *$BRANCH_NAME*
-          🧑 Autor: $GITHUB_ACTOR
-          🔗 Ver ejecución: <$WORKFLOW_URL|Abrir en GitHub Actions>"
-
-          # Enviamos el mensaje a Slack
-          curl -X POST -H 'Content-type: application/json' \
-            --data "{\"text\":\"$MESSAGE\"}" \
-            ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Decir hola
+        run: echo "Workflow iniciado correctamente"
