@@ -1,29 +1,14 @@
-name: Run Playwright from Slack
+name: Prueba Simple
 
 on:
   workflow_dispatch: 
-    inputs:
-      test:
-        description: 'Nombre del test a ejecutar'
-        required: true
-        default: '.*'
-  repository_dispatch:
-    types: [run-playwright]
   push:
-    branches: [ 'feat/ImplementacionSlack' ]
+    branches:
+      - feat/ImplementacionSlack
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/feat/ImplementacionSlack' 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-      - name: Install dependencies
-        run: npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Run Playwright
-        run: npx playwright test
+      - name: Mostrar mensaje
+        run: echo "✅ Workflow ejecutado en la rama ${{ github.ref_name }}"
