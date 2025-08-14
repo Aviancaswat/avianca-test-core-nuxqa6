@@ -1,19 +1,13 @@
-name: Test Workflow
-
 on:
-  push:
-    branches: [ 'feat/ImplementacionSlack' ]
-  workflow_dispatch:
   repository_dispatch:
-    types: [run-playwright] 
+    types: [run-playwright]
 
 jobs:
   test:
+    if: github.ref == 'refs/heads/feat/ImplementacionSlack'
     runs-on: ubuntu-latest
     steps:
-      - name: Mostrar evento recibido
+      - name: Mostrar evento y rama
         run: |
           echo "Evento: ${{ github.event_name }}"
-          echo "Payload: ${{ toJson(github.event) }}"
-
-          
+          echo "Rama: ${{ github.ref }}"
