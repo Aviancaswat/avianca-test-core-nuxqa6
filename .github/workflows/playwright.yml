@@ -2,9 +2,9 @@ name: Playwright Tests
 
 on:
   push:
-    branches: [ 'feature\message-flow-passenger' ]
+    branches: [ 'feature/message-flow-passenger' ]
   pull_request:
-    branches: [ 'feature\message-flow-passenger' ]
+    branches: [ 'feature/message-flow-passenger' ]
 
 jobs:
   test:
