@@ -36,8 +36,13 @@ const PassengerPage: TPassengerPage = {
 
         try {
 
+            const formPassenger = helper.getTotalPassengers();
+            const descriptionScreenshot = `
+                Passenger | llenado de pasajeros
+                Total formularios de pasajeros  ${formPassenger}
+            `;
             await page.waitForSelector(".passenger_data_group");
-            await helper.takeScreenshot("inicio-llenado-form-pasajeros");
+            await helper.takeScreenshot("inicio-llenado-form-pasajeros", descriptionScreenshot);
             await page.evaluate(({ userNamesData, lastNamesData, emailsData, phoneNumbersData }) => {
                 const getDataRandom = (data: Array<string> = []): string => {
                     return data[Math.floor(Math.random() * data.length)];
@@ -108,7 +113,8 @@ const PassengerPage: TPassengerPage = {
                 }
                 setValuesDefaultAutoForm();
             }, { userNamesData, lastNamesData, emailsData, phoneNumbersData });
-            await helper.takeScreenshot("fin-llenado-form-pasajeros");
+
+            await helper.takeScreenshot("fin-llenado-form-pasajeros", descriptionScreenshot);
         }
         catch (error) {
             console.error("PASSENGER => Ocurrió un error al generar los datos aleatorios en formulario de pasajeros. Error: ", error);
@@ -142,11 +148,16 @@ const PassengerPage: TPassengerPage = {
         }
 
         try {
+
+            const descriptionScreenshot = `
+            Passenger | guardar informacion para futuras compras
+            `
+
             await page.waitForSelector(".passenger_data");
             const elementSaveInformation = page.locator("label[for='guardar-informacion']");
             expect(elementSaveInformation).toBeVisible({ timeout: 30000 });
             await elementSaveInformation.click({ delay: helper.getRandomDelay() });
-            await helper.takeScreenshot("check-guardar-informacion-futuras-compras");
+            await helper.takeScreenshot("check-guardar-informacion-futuras-compras", descriptionScreenshot);
             await page.waitForTimeout(2000);
         }
         catch (error) {
@@ -249,7 +260,11 @@ const PassengerPage: TPassengerPage = {
                     }
                 });
             }, { positionPassenger, emailsData, phoneNumbersData, userNamesData, lastNamesData });
-            await helper.takeScreenshot("llenado-formulario-pasajero-#" + positionPassenger);
+             const descriptionScreenshot = `
+            Passenger | llenar formulario de pasajero por posición
+            Posicion del pasajero ${positionPassenger}
+            `
+            await helper.takeScreenshot(`llenado-formulario-pasajero-#${positionPassenger}` , descriptionScreenshot);
             await page.waitForTimeout(1000);
         }
         catch (error) {
@@ -266,13 +281,13 @@ const PassengerPage: TPassengerPage = {
         }
 
         try {
-
+            const descriptionPassenger = `Passenger | confirmacion de autorización para el tratamiento de datos`
             await page.waitForSelector(".passenger_data");
             await page.evaluate(() => { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }) });
             const checkAuthorizeData = page.locator("label[for='acceptNewCheckbox']");
             await expect(checkAuthorizeData).toBeVisible({ timeout: 15000 });
             await checkAuthorizeData.click({ delay: helper.getRandomDelay() });
-            await helper.takeScreenshot("confirmacion-autorizacion-tratamiento-datos");
+            await helper.takeScreenshot("confirmacion-autorizacion-tratamiento-datos", descriptionPassenger);
             await page.waitForTimeout(1000);
 
         } catch (error) {
@@ -290,12 +305,13 @@ const PassengerPage: TPassengerPage = {
 
         try {
 
+            const descriptionScreenshot = "Passenger | Aceptación del uso de datos personales"
             await page.waitForSelector(".passenger_data");
             await page.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }));
             const checkAcceptUseDataOffers = page.locator("label[for='sendNewsLetter']");
             await expect(checkAcceptUseDataOffers).toBeVisible({ timeout: 15000 });
             await checkAcceptUseDataOffers.click({ delay: helper.getRandomDelay() });
-            await helper.takeScreenshot("aceptar-uso-datos-promociones");
+            await helper.takeScreenshot("aceptar-uso-datos-promociones", descriptionScreenshot);
             await page.waitForTimeout(1000);
 
         } catch (error) {
@@ -313,6 +329,7 @@ const PassengerPage: TPassengerPage = {
 
         try {
 
+            const descriptionScreenshot = "Passenger | llenar formulario del titular de la reserva";
             await page.waitForSelector(".passenger_data");
             await page.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }));
             await this.fillFieldsForPosition(1);
@@ -388,7 +405,7 @@ const PassengerPage: TPassengerPage = {
                     }
                 });
             }, { emailsData, phoneNumbersData, userNamesData, lastNamesData });
-            await helper.takeScreenshot("llenado-campos-titular-reserva");
+            await helper.takeScreenshot("llenado-campos-titular-reserva", descriptionScreenshot);
             await page.waitForTimeout(1000);
         } catch (error) {
             console.error("PASSENGERPAGE => Ha ocurrido un error al llenar los campos del pasajero titular del la reserva | Error: ", error);
@@ -458,7 +475,10 @@ const PassengerPage: TPassengerPage = {
                 const inputToFillNumberFlyer = inputsUI[inputsLenght - 1];
                 await inputToFillNumberFlyer.click({ delay: helper.getRandomDelay() });
                 await inputToFillNumberFlyer.fill("123456");
-                await helper.takeScreenshot("llenado-numero-viajero-frecuente");
+                const descriptionScreenshot = `Passenger | agregar programa de viajero frecuente 
+                Posicion de pasajero agregado: ${positionPassenger}
+                `
+                await helper.takeScreenshot("llenado-numero-viajero-frecuente", descriptionScreenshot);
             }
             await page.waitForTimeout(1000);
         } catch (error) {

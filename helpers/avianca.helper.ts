@@ -72,6 +72,10 @@ const PlaywrightHelper = {
     getPosition(): Position {
         return genericCopys.position ?? "CO"
     },
+    getTotalPassengers(): number {
+        const numberPs = genericCopys.homePassengerAdults! + genericCopys.homePassengerYouths! + genericCopys.homePassengerChildren! + genericCopys.homePassengerInfant!;
+        return numberPs + 1;
+    },
     getMessageDetailsDefault(): string {
         const messageDefault = `${genericCopys.id}-${genericCopys.description}-${this.getLang()}-${this.getPosition()}`;
         return messageDefault;
