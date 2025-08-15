@@ -7,7 +7,7 @@ const tests: TGenericCopys[] = [
         homeCiudadOrigen: "BOG",
         homeCiudadDestino: "MDE",
         homeisActiveOptionOutbound: false,
-        targetPage: "passenger"
+        targetPage: "booking"
     }
 ]
 
