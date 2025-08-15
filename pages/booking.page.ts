@@ -1,4 +1,5 @@
 import { expect, type Page } from "@playwright/test";
+import { genericCopys } from "../data/copys";
 import { copyBooking } from "../data/copys/booking/booking.copy";
 import { GLOBAL_MESSAGES as m } from "../global.variables";
 import { PlaywrightHelper as helper } from "../helpers/avianca.helper";
@@ -43,6 +44,8 @@ const BookingPage: TBookingPage = {
         if (!page) {
             throw new Error(m.errors.initializated);
         }
+
+        if(genericCopys.homeisActiveOptionOutbound) return;
 
         try {
             await page.waitForSelector("#journeysContainerId_1");
@@ -202,3 +205,4 @@ const BookingPage: TBookingPage = {
 }
 
 export { BookingPage };
+
