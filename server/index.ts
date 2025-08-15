@@ -332,7 +332,7 @@ app.post('/run-tests', async (req: Request, res: Response) => {
     );
 
     // Mata la ejecución si se pasa de X tiempo (p. ej., 10 min)
-    const KILL_AFTER_MS = 10 * 60 * 1000;
+    const KILL_AFTER_MS = 60 * 60 * 1000;
     killTimer = setTimeout(() => {
       append(runLog, `TIMEOUT ${KILL_AFTER_MS}ms → SIGTERM`);
       try {

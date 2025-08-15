@@ -1,4 +1,5 @@
 import { test, type Page } from '@playwright/test';
+test.describe.configure({ mode: 'parallel' });
 import { AviancaCore } from "../core/avianca.core";
 import { tests as data } from '../data/config/dataTests';
 import { dataPages } from '../data/config/global.page';
