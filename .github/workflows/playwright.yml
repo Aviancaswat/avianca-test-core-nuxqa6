@@ -2,9 +2,9 @@ name: Playwright Tests
 
 on:
   push:
-    branches: [ 'develop' ]
+    branches: [ 'add-electron' ]
   pull_request:
-    branches: [ 'develop' ]
+    branches: [ 'add-electron' ]
 
 jobs:
   test:
