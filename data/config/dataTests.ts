@@ -6,7 +6,8 @@ const tests: TGenericCopys[] = [
         description: "ruta de barranquilla a bogotá",
         homeCiudadOrigen: "BOG",
         homeCiudadDestino: "MDE",
-        targetPage: "home"
+        targetPage: 'booking',
+        targetMethod: 'homeSeleccionarDestino'
     }
 ]
 

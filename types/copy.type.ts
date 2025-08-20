@@ -1,26 +1,26 @@
 type Lang = 'es' | 'en' | 'pt' | 'fr';
 
-type Position = 
-  | "AR" // Argentina
-  | "BR" // Brasil
-  | "CO" // Colombia
-  | "ES" // España
-  | "MX" // México
-  | "US" // Estados Unidos
-  | "CA" // Canadá
-  | "FR" // Francia
-  | "IT" // Italia
-  | "DE" // Alemania
-  | "GB" // Reino Unido
-  | "PT" // Portugal
-  | "CL" // Chile
-  | "PE" // Perú
-  | "VE" // Venezuela
-  | "JP" // Japón
-  | "KR" // Corea del Sur
-  | "AU" // Australia
-  | "IN" // India
-  | "RU"; // Rusia
+type Position =
+    | "AR" // Argentina
+    | "BR" // Brasil
+    | "CO" // Colombia
+    | "ES" // España
+    | "MX" // México
+    | "US" // Estados Unidos
+    | "CA" // Canadá
+    | "FR" // Francia
+    | "IT" // Italia
+    | "DE" // Alemania
+    | "GB" // Reino Unido
+    | "PT" // Portugal
+    | "CL" // Chile
+    | "PE" // Perú
+    | "VE" // Venezuela
+    | "JP" // Japón
+    | "KR" // Corea del Sur
+    | "AU" // Australia
+    | "IN" // India
+    | "RU"; // Rusia
 
 type copysType = {
     idioma: Lang,
@@ -60,5 +60,21 @@ type copysType = {
     getLang: () => Lang
 }
 
-export type { copysType, Lang, Position };
+type TpageAvianca =
+    | 'home'
+    | 'booking'
+    | 'passenger'
+    | 'services'
+    | 'seat'
+    | 'payment'
+
+type TMethodAvianca =
+    | 'homeSeleccionarOrigen'
+    | 'homeSeleccionarDestino'
+    | 'homeSeleccionarFechaSalida'
+    | 'homeSeleccionarFechaLlegada'
+    | 'homeSeleccionarPasajeros'
+
+
+export type { copysType, Lang, Position, TMethodAvianca, TpageAvianca };
 

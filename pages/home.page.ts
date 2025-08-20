@@ -281,6 +281,10 @@ const HomePage: THomePage = {
             throw new Error(m.errors.initializated);
         }
 
+        if(copys.targetMethod === 'homeSeleccionarDestino'){
+            console.log("Target method stop");    
+        }
+
         try {
 
             const lang = helper.getLang();
