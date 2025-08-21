@@ -282,7 +282,9 @@ const HomePage: THomePage = {
         }
 
         if(copys.targetMethod === 'homeSeleccionarDestino'){
-            console.log("Target method stop");    
+            console.log("Target method stop");
+            // process.exit(0); 
+            return;   
         }
 
         try {
