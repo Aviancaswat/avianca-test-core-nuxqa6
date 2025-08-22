@@ -296,6 +296,10 @@ const HomePage: THomePage = {
                 Ciudad destino seleccionada: ${copys.homeCiudadDestino}
             `
             await helper.takeScreenshot('04-ciudad-destino', descriptionScreenShot);
+
+            if (copys.targetMethod === 'homeSeleccionarDestino') {
+                return;
+            }
         }
         catch (error) {
             console.error("Home => Ocurrió un error al selecionar la ciudad de destino ", error);
@@ -479,7 +483,7 @@ const HomePage: THomePage = {
                 throw new Error(`Run Home => Método no reconocido: ${copys.targetMethod}`);
             }
         }
-        console.log("Run END ejecutado");
+        console.log("Run Home END ejecutado");
     }
 }
 
