@@ -21,6 +21,7 @@ export type THomePage = {
     selectPassengerChildren(passengerNumber: number): Promise<void>;
     selectPassengerInfant(passengerNumber: number): Promise<void>;
     confirmPassengerSelecteds(): Promise<void>;
+    methodsPageDefault(): Promise<void>;
 }
 
 let page: TPage;
@@ -281,15 +282,8 @@ const HomePage: THomePage = {
             throw new Error(m.errors.initializated);
         }
 
-        if(copys.targetMethod === 'homeSeleccionarDestino'){
-            console.log("Target method stop");
-            // process.exit(0); 
-            return;   
-        }
-
         try {
 
-            const lang = helper.getLang();
             await expect(page.getByPlaceholder(copys.home?.es.homeDestino)).toBeVisible();
             const destino = page.getByPlaceholder(copys.home?.es.homeDestino);
             await destino.click({ delay: helper.getRandomDelay() });
@@ -416,7 +410,7 @@ const HomePage: THomePage = {
             const lang = helper.getLang();
             await expect(page.getByRole('button', { name: copys.home![lang]?.homeBuscar, exact: true })).toBeVisible();
             await page.getByRole('button', { name: copys.home![lang]?.homeBuscar, exact: true }).click({ delay: helper.getRandomDelay() });
-            
+
             const descriptionScreenShot = `
                 Home | búsqueda de vuelos 
                 Ciudades seleccionadas: ${copys.homeCiudadOrigen} - ${copys.homeCiudadDestino}
@@ -430,19 +424,64 @@ const HomePage: THomePage = {
         }
     },
 
-    async run(): Promise<void> {
-        console.log("Run Home ejecutado");
+    async methodsPageDefault(): Promise<void> {
+        // Implementación de los métodos por defecto para la página
         await this.verifyCookies();
         await this.selectOptionTypeFlight();
-        await this.selectOriginOption();
-        await this.selectReturnOption();
-        await this.selectDepartureDate();
-        await this.selectReturnDate();
-        await this.selectPassengers();
-        await this.searchFlights();
+    },
+
+    async run(): Promise<void> {
+        console.log("Run Home ejecutado");
+        await this.methodsPageDefault();
+
+        switch (copys.targetMethod) {
+            case 'homeSeleccionarOrigen':
+                await this.selectOriginOption();
+                break;
+            case 'homeSeleccionarDestino': {
+                await this.selectOriginOption();
+                await this.selectReturnOption();
+                break;
+            }
+            case 'homeSeleccionarFechaSalida': {
+                await this.selectOriginOption();
+                await this.selectReturnOption();
+                await this.selectDepartureDate();
+                break;
+            }
+            case 'homeSeleccionarFechaLlegada': {
+                await this.selectOriginOption();
+                await this.selectReturnOption();
+                await this.selectDepartureDate();
+                await this.selectReturnDate();
+                break;
+            }
+            case 'homeSeleccionarPasajeros': {
+                await this.selectOriginOption();
+                await this.selectDestinationOption();
+                await this.selectReturnOption();
+                await this.selectDepartureDate();
+                await this.selectReturnDate();
+                await this.selectPassengers();
+                break;
+            }
+            case 'gotToBooking': {
+                await this.selectOriginOption();
+                await this.selectDestinationOption();
+                await this.selectReturnOption();
+                await this.selectDepartureDate();
+                await this.selectReturnDate();
+                await this.selectPassengers();
+                await this.searchFlights();
+                break;
+            }
+            default: {
+                throw new Error(`Run Home => Método no reconocido: ${copys.targetMethod}`);
+            }
+        }
         console.log("Run END ejecutado");
     }
-};
+}
 
 export { HomePage };
 

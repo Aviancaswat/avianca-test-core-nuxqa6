@@ -16,9 +16,8 @@ export { tests };
 // if (targetPage === 'booking') {
 //   const bookingPage = BookingPage;
 //   if (targetMethod === 'someBookingMethod') {
-//     console.log('Deteniendo ejecución en el método someBookingMethod');
 //     await bookingPage.someBookingMethod();
-//     return;  // Detén la ejecución en ese método
+//     return;
 //   }
-//   await bookingPage.otherBookingMethod();  // Continuar con otro método si no es el de detener
+//   await bookingPage.otherBookingMethod();
 // }

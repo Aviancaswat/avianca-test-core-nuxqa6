@@ -74,6 +74,7 @@ type TMethodAvianca =
     | 'homeSeleccionarFechaSalida'
     | 'homeSeleccionarFechaLlegada'
     | 'homeSeleccionarPasajeros'
+    | 'gotToBooking'
 
 
 export type { copysType, Lang, Position, TMethodAvianca, TpageAvianca };
